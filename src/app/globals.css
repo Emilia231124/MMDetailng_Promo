@@ -191,3 +191,25 @@ html.lenis body {
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================
+   Custom Cursor — скрываем нативный на desktop
+   ============================================ */
+@media (min-width: 1024px) {
+  *,
+  *::before,
+  *::after {
+    cursor: none !important;
+  }
+}
+
+/* ============================================
+   Scrollbar hide utility
+   ============================================ */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
