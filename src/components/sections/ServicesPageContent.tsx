@@ -33,7 +33,7 @@ export default function ServicesPageContent() {
           className="absolute inset-0 h-[50vh]"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(200,169,126,0.08) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
@@ -56,15 +56,15 @@ export default function ServicesPageContent() {
                 onClick={() => setActiveCategory(cat)}
                 className={`relative shrink-0 rounded-full px-5 py-2 font-mono text-xs uppercase tracking-widest transition-colors duration-200 ${
                   activeCategory === cat
-                    ? "bg-[var(--accent-primary)] text-[var(--bg-primary)]"
-                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-primary)] hover:text-[var(--text-primary)]"
+                    ? "bg-[var(--accent-red)] text-[var(--bg-primary)]"
+                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-red)] hover:text-[var(--text-primary)]"
                 }`}
               >
                 {cat}
                 {activeCategory === cat && (
                   <motion.span
                     layoutId="filter-indicator"
-                    className="absolute inset-0 rounded-full bg-[var(--accent-primary)]"
+                    className="absolute inset-0 rounded-full bg-[var(--accent-red)]"
                     style={{ zIndex: -1 }}
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
@@ -91,7 +91,7 @@ export default function ServicesPageContent() {
                 >
                   <Link
                     href={`/services/${service.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-colors duration-300 hover:border-[var(--accent-primary)]"
+                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-colors duration-300 hover:border-[var(--accent-red)]"
                   >
                     {/* Image placeholder */}
                     <div
@@ -117,7 +117,7 @@ export default function ServicesPageContent() {
 
                     {/* Content */}
                     <div className="flex flex-1 flex-col p-6">
-                      <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+                      <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
                         {service.category}
                       </span>
                       <h3 className="mt-2 font-display text-2xl font-bold text-[var(--text-primary)]">
@@ -127,11 +127,11 @@ export default function ServicesPageContent() {
                         {service.desc}
                       </p>
                       <div className="mt-4 flex items-center justify-between">
-                        <span className="font-mono text-sm text-[var(--accent-primary)]">
+                        <span className="font-mono text-sm text-[var(--accent-red)]">
                           от {formatPrice(service.priceNew)} ₽
                         </span>
                         <span
-                          className="font-mono text-lg text-[var(--accent-primary)] transition-transform duration-300 group-hover:translate-x-2"
+                          className="font-mono text-lg text-[var(--accent-red)] transition-transform duration-300 group-hover:translate-x-2"
                           aria-hidden
                         >
                           →

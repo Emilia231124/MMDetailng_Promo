@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef } from "react";
-import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap-config";
+import GlassButton from "@/components/ui/GlassButton";
 
 export default function HeroVideo() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -11,7 +11,7 @@ export default function HeroVideo() {
   const contentRef = useRef<HTMLDivElement>(null);
   const titleWordsRef = useRef<HTMLSpanElement[]>([]);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLAnchorElement>(null);
+  const ctaRef = useRef<HTMLElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -125,9 +125,7 @@ export default function HeroVideo() {
                 }}
                 className={[
                   "block text-[12vw] md:text-[8vw]",
-                  word === "MM"
-                    ? "text-[var(--accent-primary)]"
-                    : "text-[var(--text-primary)]",
+                  "text-[var(--text-primary)]",
                 ].join(" ")}
                 style={{ transform: "translateY(110%)" }}
               >
@@ -147,14 +145,16 @@ export default function HeroVideo() {
         </p>
 
         {/* CTA */}
-        <Link
+        <GlassButton
           ref={ctaRef}
           href="/booking"
-          className="mt-8 w-full max-w-xs md:w-auto inline-flex items-center justify-center px-8 py-4 font-body text-base font-medium uppercase tracking-wider bg-[var(--accent-primary)] text-black transition-all duration-200 hover:scale-105 hover:brightness-110"
+          variant="default"
+          size="lg"
+          className="mt-8 w-full max-w-xs md:w-auto"
           style={{ opacity: 0 }}
         >
           Записаться
-        </Link>
+        </GlassButton>
 
         {/* Scroll indicator */}
         <div
@@ -168,7 +168,7 @@ export default function HeroVideo() {
           </span>
           <div className="relative h-[60px] w-[1px] bg-[var(--border)] overflow-hidden">
             <div
-              className="absolute top-0 left-0 w-full bg-[var(--accent-primary)]"
+              className="absolute top-0 left-0 w-full bg-[var(--accent-red)]"
               style={{
                 animation: "scrollDot 1.6s ease-in-out infinite",
                 height: "30%",

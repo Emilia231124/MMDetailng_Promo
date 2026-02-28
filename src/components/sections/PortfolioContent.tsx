@@ -19,7 +19,7 @@ function BeforeAfterCard({
   return (
     <button
       onClick={onClick}
-      className="group relative w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] text-left transition-colors hover:border-[var(--accent-primary)]"
+      className="group relative w-full overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] text-left transition-colors hover:border-[var(--accent-red)]"
       aria-label={`Открыть работу: ${item.title}`}
     >
       {/* Before / After */}
@@ -42,7 +42,7 @@ function BeforeAfterCard({
             style={{ background: item.gradientAfter }}
           >
             <div className="flex h-full items-end p-2">
-              <span className="rounded bg-black/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-[var(--accent-primary)]">
+              <span className="rounded bg-black/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-[var(--accent-red)]">
                 После
               </span>
             </div>
@@ -52,7 +52,7 @@ function BeforeAfterCard({
 
       {/* Hover overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-[var(--bg-primary)]/80 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
-        <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+        <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
           {item.category}
         </span>
         <span className="mt-1 font-display text-xl font-bold text-[var(--text-primary)]">
@@ -110,7 +110,7 @@ function PortfolioModal({
             style={{ background: item.gradientAfter }}
           >
             <div className="flex h-full items-end p-3">
-              <span className="rounded bg-black/50 px-2 py-1 font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+              <span className="rounded bg-black/50 px-2 py-1 font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
                 После
               </span>
             </div>
@@ -119,7 +119,7 @@ function PortfolioModal({
 
         {/* Info */}
         <div className="p-6">
-          <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+          <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
             {item.category}
           </span>
           <h3 className="mt-1 font-display text-2xl font-bold text-[var(--text-primary)]">
@@ -131,14 +131,14 @@ function PortfolioModal({
           <div className="mt-6 flex items-center justify-between">
             <Link
               href={`/services/${item.serviceSlug}`}
-              className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)] underline underline-offset-4"
+              className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)] underline underline-offset-4"
               onClick={onClose}
             >
               Подробнее об услуге →
             </Link>
             <button
               onClick={onClose}
-              className="rounded-full border border-[var(--border)] px-5 py-2 font-mono text-xs uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:border-[var(--accent-primary)] hover:text-[var(--text-primary)]"
+              className="rounded-full border border-[var(--border)] px-5 py-2 font-mono text-xs uppercase tracking-widest text-[var(--text-secondary)] transition-colors hover:border-[var(--accent-red)] hover:text-[var(--text-primary)]"
             >
               Закрыть
             </button>
@@ -166,7 +166,7 @@ export default function PortfolioContent() {
           className="pointer-events-none absolute inset-0 h-[50vh]"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(200,169,126,0.08) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
@@ -189,15 +189,15 @@ export default function PortfolioContent() {
                 onClick={() => setActiveCategory(cat)}
                 className={`relative shrink-0 rounded-full px-5 py-2 font-mono text-xs uppercase tracking-widest transition-colors duration-200 ${
                   activeCategory === cat
-                    ? "bg-[var(--accent-primary)] text-[var(--bg-primary)]"
-                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-primary)] hover:text-[var(--text-primary)]"
+                    ? "bg-[var(--accent-red)] text-[var(--bg-primary)]"
+                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-red)] hover:text-[var(--text-primary)]"
                 }`}
               >
                 {cat}
                 {activeCategory === cat && (
                   <motion.span
                     layoutId="portfolio-filter"
-                    className="absolute inset-0 rounded-full bg-[var(--accent-primary)]"
+                    className="absolute inset-0 rounded-full bg-[var(--accent-red)]"
                     style={{ zIndex: -1 }}
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />

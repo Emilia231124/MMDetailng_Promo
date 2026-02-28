@@ -29,9 +29,9 @@ const VALUES = [
 ];
 
 const TEAM = [
-  { name: "Мурад", role: "Основатель & Мастер PPF", gradient: "linear-gradient(135deg, #1a0d2e 0%, #3a1a5e 100%)" },
-  { name: "Алибек", role: "Мастер полировки", gradient: "linear-gradient(135deg, #2a1800 0%, #4a2d00 100%)" },
-  { name: "Руслан", role: "Мастер детейлинга", gradient: "linear-gradient(135deg, #0a1a0a 0%, #1a3a1a 100%)" },
+  { name: "Мурад", role: "Основатель & Мастер PPF", gradient: "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)" },
+  { name: "Алибек", role: "Мастер полировки", gradient: "linear-gradient(135deg, #0d0d0d 0%, #181818 100%)" },
+  { name: "Руслан", role: "Мастер детейлинга", gradient: "linear-gradient(135deg, #0e0e0e 0%, #1c1c1c 100%)" },
 ];
 
 const STATS = [
@@ -71,13 +71,13 @@ export default function AboutContent() {
       {/* Hero */}
       <section
         ref={heroRef}
-        className="flex h-[50vh] items-end bg-[var(--bg-primary)] pb-12"
+        className="flex h-[60vh] items-end bg-[var(--bg-primary)] pb-12"
       >
         <div
-          className="pointer-events-none absolute inset-0 h-[50vh]"
+          className="pointer-events-none absolute inset-0 h-[60vh]"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(200,169,126,0.08) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
@@ -91,29 +91,29 @@ export default function AboutContent() {
       </section>
 
       {/* История */}
-      <section className="bg-[var(--bg-primary)] py-20">
+      <section className="bg-[var(--bg-primary)] py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
             <ScrollReveal>
-              <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+              <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
                 Наша история
               </span>
               <h2 className="mt-3 font-display text-4xl font-bold uppercase leading-tight text-[var(--text-primary)] md:text-5xl">
                 MM Detailing — это...
               </h2>
               <div className="mt-6 space-y-4">
-                <p className="font-body text-base leading-relaxed text-[var(--text-secondary)]">
+                <p className="font-body text-lg leading-relaxed text-[var(--text-secondary)]">
                   MM Detailing был основан в 2021 году с одной целью — привнести
                   в Дагестан культуру настоящего премиального ухода за автомобилем.
                   Когда в регионе не было профессионального детейлинга, мы первыми
                   стали работать с PPF, керамикой и профессиональной полировкой.
                 </p>
-                <p className="font-body text-base leading-relaxed text-[var(--text-secondary)]">
+                <p className="font-body text-lg leading-relaxed text-[var(--text-secondary)]">
                   За четыре года мы обработали более 500 автомобилей — от
                   повседневных машин до суперкаров стоимостью в десятки миллионов.
                   Каждый проект — это вызов, каждый результат — это наша гордость.
                 </p>
-                <p className="font-body text-base leading-relaxed text-[var(--text-secondary)]">
+                <p className="font-body text-lg leading-relaxed text-[var(--text-secondary)]">
                   Мы постоянно учимся: проходим сертификацию у мировых брендов,
                   изучаем новые технологии и привозим в Дагестан лучшее, что есть
                   в индустрии детейлинга.
@@ -127,13 +127,13 @@ export default function AboutContent() {
                 className="aspect-[4/3] overflow-hidden rounded-2xl"
                 style={{
                   background:
-                    "linear-gradient(135deg, #141414 0%, #1a1a1a 50%, #0d1b2a 100%)",
+                    "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #111111 100%)",
                 }}
               >
                 <div className="flex h-full flex-col items-center justify-center">
                   <span
                     className="font-display text-8xl font-bold uppercase"
-                    style={{ color: "rgba(200,169,126,0.15)" }}
+                    style={{ color: "rgba(255,255,255,0.08)" }}
                   >
                     MM
                   </span>
@@ -148,7 +148,7 @@ export default function AboutContent() {
       </section>
 
       {/* Ценности */}
-      <section className="bg-[var(--bg-secondary)] py-20">
+      <section className="bg-[var(--bg-secondary)] py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal className="mb-12">
             <SectionHeading
@@ -157,11 +157,11 @@ export default function AboutContent() {
               align="center"
             />
           </ScrollReveal>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-12">
             {VALUES.map((value, i) => (
               <ScrollReveal key={value.title} delay={i * 0.1}>
                 <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-8 text-center">
-                  <span className="font-mono text-3xl text-[var(--accent-primary)]">
+                  <span className="font-mono text-3xl text-[var(--accent-red)]">
                     {value.icon}
                   </span>
                   <h3 className="mt-4 font-display text-2xl font-bold uppercase text-[var(--text-primary)]">
@@ -178,7 +178,7 @@ export default function AboutContent() {
       </section>
 
       {/* Команда */}
-      <section className="bg-[var(--bg-primary)] py-20">
+      <section className="bg-[var(--bg-primary)] py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal className="mb-12">
             <SectionHeading label="Люди" title="НАША КОМАНДА" />
@@ -204,7 +204,7 @@ export default function AboutContent() {
                     <h3 className="font-display text-xl font-bold text-[var(--text-primary)]">
                       {member.name}
                     </h3>
-                    <p className="mt-1 font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+                    <p className="mt-1 font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
                       {member.role}
                     </p>
                   </div>
@@ -216,7 +216,7 @@ export default function AboutContent() {
       </section>
 
       {/* Цифры */}
-      <section className="bg-[var(--bg-secondary)] py-20">
+      <section className="bg-[var(--bg-secondary)] py-32">
         <div ref={statsRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {STATS.map((stat) => (
@@ -225,7 +225,7 @@ export default function AboutContent() {
                 data-stat
                 className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 text-center"
               >
-                <div className="font-mono text-4xl font-bold text-[var(--accent-primary)]">
+                <div className="font-mono text-4xl font-bold text-[var(--accent-red)]">
                   {stat.value}
                 </div>
                 <div className="mt-2 font-body text-sm text-[var(--text-secondary)]">
@@ -238,7 +238,7 @@ export default function AboutContent() {
       </section>
 
       {/* CTA */}
-      <section className="bg-[var(--bg-primary)] py-20">
+      <section className="bg-[var(--bg-primary)] py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ScrollReveal className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-10 text-center">
             <h2 className="font-display text-3xl font-bold uppercase text-[var(--text-primary)]">
@@ -250,7 +250,7 @@ export default function AboutContent() {
             </p>
             <Link
               href="/contact"
-              className="mt-6 inline-block rounded-full bg-[var(--accent-primary)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
+              className="mt-6 inline-block rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
             >
               Как нас найти
             </Link>

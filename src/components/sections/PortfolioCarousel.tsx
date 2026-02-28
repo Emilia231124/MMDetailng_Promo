@@ -13,58 +13,17 @@ interface CarouselItem {
   id: string;
   title: string;
   category: "PPF" | "Ceramic" | "Polish" | "Interior";
-  gradient: string;
 }
 
 const ITEMS: CarouselItem[] = [
-  {
-    id: "1",
-    title: "BMW X5",
-    category: "PPF",
-    gradient: "linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 50%, #0f3460 100%)",
-  },
-  {
-    id: "2",
-    title: "Mercedes S-Class",
-    category: "Ceramic",
-    gradient: "linear-gradient(135deg, #1a0d2e 0%, #2d1b4e 50%, #4a2d6e 100%)",
-  },
-  {
-    id: "3",
-    title: "Porsche 911",
-    category: "Polish",
-    gradient: "linear-gradient(135deg, #2a1800 0%, #4a2d00 50%, #6b4000 100%)",
-  },
-  {
-    id: "4",
-    title: "Range Rover Sport",
-    category: "Interior",
-    gradient: "linear-gradient(135deg, #0a1a0a 0%, #1a3a1a 50%, #0d2a0d 100%)",
-  },
-  {
-    id: "5",
-    title: "Audi RS7",
-    category: "PPF",
-    gradient: "linear-gradient(135deg, #0a1e2e 0%, #1a3a5a 50%, #0c2a45 100%)",
-  },
-  {
-    id: "6",
-    title: "Lamborghini Urus",
-    category: "Ceramic",
-    gradient: "linear-gradient(135deg, #200d3a 0%, #3a1a5e 50%, #5a2a8e 100%)",
-  },
-  {
-    id: "7",
-    title: "Tesla Model S",
-    category: "Polish",
-    gradient: "linear-gradient(135deg, #1e1200 0%, #3a2200 50%, #552e00 100%)",
-  },
-  {
-    id: "8",
-    title: "Toyota Land Cruiser",
-    category: "Interior",
-    gradient: "linear-gradient(135deg, #051505 0%, #112211 50%, #0d1f0d 100%)",
-  },
+  { id: "1", title: "BMW X5", category: "PPF" },
+  { id: "2", title: "Mercedes S-Class", category: "Ceramic" },
+  { id: "3", title: "Porsche 911", category: "Polish" },
+  { id: "4", title: "Range Rover Sport", category: "Interior" },
+  { id: "5", title: "Audi RS7", category: "PPF" },
+  { id: "6", title: "Lamborghini Urus", category: "Ceramic" },
+  { id: "7", title: "Tesla Model S", category: "Polish" },
+  { id: "8", title: "Toyota Land Cruiser", category: "Interior" },
 ];
 
 const CARD_COUNT = ITEMS.length; // 8
@@ -77,12 +36,7 @@ const SENSITIVITY = 0.28; // px drag → degrees rotation
 // Helpers
 // ---------------------------------------------------------------------------
 
-const CATEGORY_COLOR: Record<CarouselItem["category"], string> = {
-  PPF: "#2563EB",
-  Ceramic: "#8B5CF6",
-  Polish: "#C8A97E",
-  Interior: "#22C55E",
-};
+const CARD_BG = "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)";
 
 // ---------------------------------------------------------------------------
 // Mobile carousel (scroll-snap)
@@ -101,7 +55,7 @@ function CarouselMobile({ items }: { items: CarouselItem[] }) {
           style={{
             width: "80vw",
             height: 380,
-            background: item.gradient,
+            background: CARD_BG,
             border: "1px solid var(--border)",
           }}
         >
@@ -127,7 +81,7 @@ function CarouselMobile({ items }: { items: CarouselItem[] }) {
           <div className="absolute bottom-0 left-0 right-0 p-5">
             <span
               className="font-mono text-xs uppercase tracking-widest"
-              style={{ color: CATEGORY_COLOR[item.category] }}
+              style={{ color: "var(--accent-red)" }}
             >
               {item.category}
             </span>
@@ -324,7 +278,7 @@ export default function PortfolioCarousel() {
 
       {/* Section header */}
       <div ref={headerRef} className="mb-20 text-center">
-        <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+        <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
           ПОРТФОЛИО
         </span>
         <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-tight text-[var(--text-primary)] md:text-7xl">
@@ -378,7 +332,7 @@ export default function PortfolioCarousel() {
                   <div
                     className="group relative h-full w-full overflow-hidden rounded-2xl transition-transform duration-300 hover:scale-[1.03]"
                     style={{
-                      background: item.gradient,
+                      background: CARD_BG,
                       border: "1px solid var(--border)",
                       boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
                     }}
@@ -419,7 +373,7 @@ export default function PortfolioCarousel() {
                     <div className="absolute bottom-0 left-0 right-0 p-6">
                       <span
                         className="font-mono text-xs uppercase tracking-widest"
-                        style={{ color: CATEGORY_COLOR[item.category] }}
+                        style={{ color: "var(--accent-red)" }}
                       >
                         {item.category}
                       </span>
@@ -444,7 +398,8 @@ export default function PortfolioCarousel() {
         aria-hidden
         className="pointer-events-none fixed left-0 top-0 z-50 flex h-20 w-20 items-center justify-center rounded-full transition-opacity duration-200"
         style={{
-          background: "var(--accent-primary)",
+          background: "var(--accent-red)",
+          boxShadow: "0 0 20px var(--accent-red-glow)",
           opacity: isHovering ? 0.92 : 0,
         }}
       >

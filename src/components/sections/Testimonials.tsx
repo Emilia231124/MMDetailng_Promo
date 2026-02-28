@@ -84,7 +84,7 @@ function Stars({ count }: { count: number }) {
         <span
           key={i}
           className="text-sm"
-          style={{ color: i < count ? "var(--accent-primary)" : "var(--text-muted)" }}
+          style={{ color: i < count ? "var(--accent-red)" : "var(--text-muted)" }}
         >
           ★
         </span>
@@ -97,21 +97,22 @@ function Stars({ count }: { count: number }) {
 function ReviewCard({ review }: { review: Review }) {
   return (
     <article
-      className="flex min-w-[320px] flex-col rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] p-6 md:min-w-[400px]"
+      className="flex min-w-[360px] flex-col rounded-xl bg-[var(--bg-elevated)] border border-[var(--border)] p-8 md:min-w-[440px] md:p-10"
       aria-label={`Отзыв от ${review.author}`}
     >
-      <Stars count={review.rating} />
-      <p className="mt-4 line-clamp-4 font-body text-sm leading-relaxed text-[var(--text-primary)]">
+      <div className="flex gap-1.5 mb-6">
+        <Stars count={review.rating} />
+      </div>
+      <p className="line-clamp-3 font-body text-base leading-relaxed text-[var(--text-secondary)] md:text-lg">
         {review.text}
       </p>
-      <div className="mt-4 border-t border-[var(--border)] pt-4">
-        <p className="font-body text-sm font-semibold text-[var(--text-primary)]">
-          {review.author}
-        </p>
-        <p className="mt-0.5 font-mono text-xs text-[var(--text-secondary)]">
-          {review.car}
-        </p>
-      </div>
+      <div className="h-px bg-[var(--border)] my-6" />
+      <p className="font-body text-base font-medium text-[var(--text-primary)]">
+        {review.author}
+      </p>
+      <p className="mt-1 font-mono text-sm text-[var(--text-muted)]">
+        {review.car}
+      </p>
     </article>
   );
 }
@@ -182,7 +183,7 @@ export default function Testimonials() {
   return (
     <section
       ref={sectionRef}
-      className="overflow-hidden bg-[var(--bg-primary)] py-28 md:py-36"
+      className="overflow-hidden bg-[var(--bg-primary)] py-32 md:py-40 lg:py-48"
       aria-label="Отзывы клиентов"
     >
       {/* Heading */}

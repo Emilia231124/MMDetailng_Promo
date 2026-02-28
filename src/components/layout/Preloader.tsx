@@ -32,7 +32,7 @@ export default function Preloader() {
             {["M", "M"].map((letter, i) => (
               <div key={i} className="overflow-hidden">
                 <motion.span
-                  className="block font-display text-[15vw] font-bold leading-none text-[var(--accent-primary)]"
+                  className="block font-display text-[15vw] font-bold leading-none text-[var(--accent-red)]"
                   initial={{ y: "110%" }}
                   animate={{ y: 0 }}
                   transition={{
@@ -60,7 +60,7 @@ export default function Preloader() {
           {/* Progress bar */}
           <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[var(--border)]">
             <motion.div
-              className="h-full bg-[var(--accent-primary)]"
+              className="h-full bg-[var(--accent-red)]"
               initial={{ width: "0%" }}
               animate={{ width: "100%" }}
               transition={{ duration: 1.8, ease: "linear" }}

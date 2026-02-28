@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
@@ -66,7 +65,7 @@ export default function WhyUs() {
   return (
     <section
       ref={sectionRef}
-      className="bg-[var(--bg-secondary)] py-28 md:py-36"
+      className="bg-[var(--bg-secondary)] py-32 md:py-40 lg:py-48"
       aria-label="Почему MM Detailing"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -74,25 +73,15 @@ export default function WhyUs() {
 
           {/* Left: text block */}
           <div ref={leftRef}>
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+            <span className="font-mono text-sm uppercase tracking-widest text-[var(--accent-red)]">
               ПОЧЕМУ
             </span>
-            <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none text-[var(--text-primary)] md:text-6xl">
+            <h2 className="mt-3 font-display text-5xl font-bold uppercase leading-none tracking-tight text-[var(--text-primary)] md:text-6xl lg:text-7xl">
               MM DETAILING
             </h2>
-            <p className="mt-6 max-w-lg font-body text-base leading-relaxed text-[var(--text-secondary)] md:text-lg">
-              Мы не просто моем машины — мы восстанавливаем и защищаем их.
-              Каждый автомобиль обрабатывается вручную с использованием
-              профессиональной химии и оборудования. Результат — гарантирован.
+            <p className="mt-6 max-w-lg font-body text-lg leading-relaxed text-[var(--text-secondary)] md:text-xl">
+              Мы не просто моем машины — мы восстанавливаем и защищаем их. Результат гарантирован.
             </p>
-            <div className="mt-8">
-              <Link
-                href="/about"
-                className="inline-block border border-[var(--accent-primary)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--accent-primary)] transition-colors duration-300 hover:bg-[var(--accent-primary)] hover:text-[var(--bg-primary)]"
-              >
-                Подробнее о нас
-              </Link>
-            </div>
           </div>
 
           {/* Right: 2×2 stats grid */}
@@ -109,7 +98,7 @@ export default function WhyUs() {
                 <AnimatedCounter
                   end={stat.end}
                   suffix={stat.suffix}
-                  className="font-display text-5xl font-bold text-[var(--accent-primary)]"
+                  className="font-display text-5xl font-bold text-[var(--accent-red)]"
                 />
                 <p className="mt-2 font-body text-sm text-[var(--text-secondary)]">
                   {stat.label}

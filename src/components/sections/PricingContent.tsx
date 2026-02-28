@@ -48,7 +48,7 @@ export default function PricingContent() {
           className="pointer-events-none absolute inset-0 h-[50vh]"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(200,169,126,0.08) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
@@ -71,7 +71,7 @@ export default function PricingContent() {
                 onClick={() => setCarType(type)}
                 className={`relative px-5 py-2 font-mono text-xs uppercase tracking-widest transition-colors duration-200 ${
                   carType === type
-                    ? "text-[var(--accent-primary)]"
+                    ? "text-[var(--accent-red)]"
                     : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                 }`}
               >
@@ -79,7 +79,7 @@ export default function PricingContent() {
                 {carType === type && (
                   <motion.div
                     layoutId="price-tab-underline"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-primary)]"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-red)]"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -116,7 +116,7 @@ export default function PricingContent() {
                       >
                         {/* Name */}
                         <div className="min-w-0 flex-1">
-                          <span className="font-body text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-primary)]">
+                          <span className="font-body text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-red)]">
                             {service.title}
                           </span>
                         </div>
@@ -137,7 +137,7 @@ export default function PricingContent() {
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: 8 }}
                               transition={{ duration: 0.2 }}
-                              className="block font-mono text-xl text-[var(--accent-primary)]"
+                              className="block font-mono text-xl text-[var(--accent-red)]"
                             >
                               {formatPrice(
                                 carType === "new" ? service.priceNew : service.priceUsed
@@ -149,7 +149,7 @@ export default function PricingContent() {
 
                         {/* Arrow */}
                         <span
-                          className="ml-4 shrink-0 font-mono text-[var(--text-muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent-primary)]"
+                          className="ml-4 shrink-0 font-mono text-[var(--text-muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent-red)]"
                           aria-hidden
                         >
                           →
@@ -173,13 +173,13 @@ export default function PricingContent() {
             <div className="mt-6 flex flex-wrap justify-center gap-4">
               <Link
                 href="/contact"
-                className="rounded-full border border-[var(--accent-primary)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--accent-primary)] transition-colors hover:bg-[var(--accent-primary)] hover:text-[var(--bg-primary)]"
+                className="rounded-full border border-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--accent-red)] transition-colors hover:bg-[var(--accent-red)] hover:text-[var(--bg-primary)]"
               >
                 Написать нам
               </Link>
               <Link
                 href="/booking"
-                className="rounded-full bg-[var(--accent-primary)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
+                className="rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
               >
                 Записаться
               </Link>

@@ -9,10 +9,13 @@
   --color-brand-bg: var(--bg-primary);
   --color-brand-bg-secondary: var(--bg-secondary);
   --color-brand-elevated: var(--bg-elevated);
-  --color-brand-accent: var(--accent-primary);
-  --color-brand-glow: var(--accent-glow);
-  --color-brand-blue: var(--accent-blue);
+  --color-brand-card: var(--bg-card);
+  --color-brand-red: var(--accent-red);
+  --color-brand-red-light: var(--accent-red-light);
+  --color-brand-red-dark: var(--accent-red-dark);
+  --color-brand-red-glow: var(--accent-red-glow);
   --color-brand-border: var(--brand-border);
+  --color-brand-glass: var(--glass);
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
@@ -86,8 +89,8 @@
   --card-foreground: oklch(0.96 0 0);
   --popover: oklch(0.1 0 0);
   --popover-foreground: oklch(0.96 0 0);
-  --primary: oklch(0.76 0.08 65);
-  --primary-foreground: oklch(0.08 0 0);
+  --primary: oklch(0.50 0.18 25);
+  --primary-foreground: oklch(0.96 0 0);
   --secondary: oklch(0.14 0 0);
   --secondary-foreground: oklch(0.96 0 0);
   --muted: oklch(0.14 0 0);
@@ -95,35 +98,52 @@
   --accent: oklch(0.14 0 0);
   --accent-foreground: oklch(0.96 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.16 0 0);
+  --border: rgba(255, 255, 255, 0.06);
   --input: oklch(0.16 0 0);
-  --ring: oklch(0.76 0.08 65);
-  --chart-1: oklch(0.646 0.222 41.116);
+  --ring: oklch(0.50 0.18 25);
+  --chart-1: oklch(0.50 0.18 25);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.1 0 0);
   --sidebar-foreground: oklch(0.96 0 0);
-  --sidebar-primary: oklch(0.76 0.08 65);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
+  --sidebar-primary: oklch(0.50 0.18 25);
+  --sidebar-primary-foreground: oklch(0.96 0 0);
   --sidebar-accent: oklch(0.14 0 0);
   --sidebar-accent-foreground: oklch(0.96 0 0);
   --sidebar-border: oklch(0.16 0 0);
-  --sidebar-ring: oklch(0.76 0.08 65);
+  --sidebar-ring: oklch(0.50 0.18 25);
 
   /* MM Detailing Brand Colors */
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #141414;
-  --bg-elevated: #1A1A1A;
-  --text-primary: #F5F5F5;
-  --text-secondary: #8A8A8A;
-  --text-muted: #4A4A4A;
-  --accent-primary: #C8A97E;
-  --accent-glow: #D4AF37;
-  --accent-blue: #2563EB;
-  --brand-border: #1F1F1F;
+  /* Фоны — глубокий чёрный, "стеклянный" */
+  --bg-primary: #050505;
+  --bg-secondary: #0A0A0A;
+  --bg-elevated: #111111;
+  --bg-card: #0D0D0D;
+
+  /* Текст — чистый белый и оттенки серого */
+  --text-primary: #FFFFFF;
+  --text-secondary: #999999;
+  --text-muted: #555555;
+  --text-dim: #333333;
+
+  /* Акцент — ТОЛЬКО красный */
+  --accent-red: #C41E2A;
+  --accent-red-light: #E63946;
+  --accent-red-dark: #8B0000;
+  --accent-red-glow: rgba(196, 30, 42, 0.15);
+
+  /* Стекло и отражения */
   --glass: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-highlight: rgba(255, 255, 255, 0.08);
+  --mirror-gradient: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.02) 100%);
+
+  /* Границы */
+  --brand-border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --border-red: rgba(196, 30, 42, 0.3);
 }
 
 /* ============================================
@@ -168,8 +188,8 @@ html.lenis body {
    Selection & Scrollbar
    ============================================ */
 ::selection {
-  background-color: var(--accent-primary);
-  color: var(--bg-primary);
+  background-color: var(--accent-red);
+  color: white;
 }
 
 ::-webkit-scrollbar {
@@ -179,7 +199,7 @@ html.lenis body {
   background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-primary);
+  background: var(--accent-red);
   border-radius: 3px;
 }
 
@@ -201,6 +221,14 @@ html.lenis body {
   *::after {
     cursor: none !important;
   }
+}
+
+/* ============================================
+   BorderTraceButton — анимация обегающей линии
+   ============================================ */
+@keyframes border-trace {
+  0%   { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -560; }
 }
 
 /* ============================================

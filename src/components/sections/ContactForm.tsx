@@ -71,7 +71,7 @@ export default function ContactForm() {
           className="pointer-events-none absolute inset-0 h-[40vh]"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(200,169,126,0.08) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
@@ -94,7 +94,7 @@ export default function ContactForm() {
               <div className="space-y-8">
                 {CONTACTS.map((contact) => (
                   <div key={contact.label} className="flex gap-4">
-                    <span className="mt-0.5 shrink-0 font-mono text-lg text-[var(--accent-primary)]">
+                    <span className="mt-0.5 shrink-0 font-mono text-lg text-[var(--accent-red)]">
                       {contact.icon}
                     </span>
                     <div>
@@ -104,7 +104,7 @@ export default function ContactForm() {
                       {contact.href ? (
                         <a
                           href={contact.href}
-                          className="mt-1 font-body text-[var(--text-primary)] transition-colors hover:text-[var(--accent-primary)]"
+                          className="mt-1 font-body text-[var(--text-primary)] transition-colors hover:text-[var(--accent-red)]"
                         >
                           {contact.value}
                         </a>
@@ -130,7 +130,7 @@ export default function ContactForm() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={social.label}
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] font-mono text-xs text-[var(--text-secondary)] transition-colors hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)]"
+                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] font-mono text-xs text-[var(--text-secondary)] transition-colors hover:border-[var(--accent-red)] hover:text-[var(--accent-red)]"
                       >
                         {social.icon}
                       </a>
@@ -148,8 +148,8 @@ export default function ContactForm() {
                 </h2>
 
                 {sent ? (
-                  <div className="mt-6 rounded-lg border border-[var(--accent-primary)] bg-[var(--bg-primary)] p-6 text-center">
-                    <p className="font-mono text-sm text-[var(--accent-primary)]">
+                  <div className="mt-6 rounded-lg border border-[var(--accent-red)] bg-[var(--bg-primary)] p-6 text-center">
+                    <p className="font-mono text-sm text-[var(--accent-red)]">
                       ✓ Сообщение отправлено
                     </p>
                     <p className="mt-2 font-body text-xs text-[var(--text-secondary)]">
@@ -171,7 +171,7 @@ export default function ContactForm() {
                         {...register("name")}
                         type="text"
                         placeholder="Ваше имя"
-                        className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none transition-colors focus:border-[var(--accent-primary)]"
+                        className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none transition-colors focus:border-[var(--accent-red)]"
                       />
                       {errors.name && (
                         <p className="mt-1 font-mono text-xs text-red-400">
@@ -189,7 +189,7 @@ export default function ContactForm() {
                         {...register("phone")}
                         type="tel"
                         placeholder="+7 (___) ___-__-__"
-                        className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none transition-colors focus:border-[var(--accent-primary)]"
+                        className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none transition-colors focus:border-[var(--accent-red)]"
                       />
                       {errors.phone && (
                         <p className="mt-1 font-mono text-xs text-red-400">
@@ -207,7 +207,7 @@ export default function ContactForm() {
                         {...register("message")}
                         rows={4}
                         placeholder="Расскажите о вашем автомобиле или задайте вопрос..."
-                        className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none transition-colors focus:border-[var(--accent-primary)]"
+                        className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none transition-colors focus:border-[var(--accent-red)]"
                       />
                       {errors.message && (
                         <p className="mt-1 font-mono text-xs text-red-400">
@@ -219,7 +219,7 @@ export default function ContactForm() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full rounded-full bg-[var(--accent-primary)] py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90 disabled:opacity-50"
+                      className="w-full rounded-full bg-[var(--accent-red)] py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90 disabled:opacity-50"
                     >
                       {isSubmitting ? "Отправка..." : "Отправить"}
                     </button>

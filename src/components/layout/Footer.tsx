@@ -42,11 +42,12 @@ export default function Footer() {
           {/* Column 1: Brand */}
           <div className="flex flex-col gap-4">
             <div>
-              <span className="font-display text-3xl font-bold text-[var(--accent-primary)]">MM</span>
-              <span className="ml-2 font-display text-3xl font-bold text-[var(--text-primary)]">DETAILING</span>
+              <span className="font-display text-3xl font-bold text-[var(--text-primary)]">MM</span>
+              <span className="mx-1 font-display text-3xl font-bold text-[var(--accent-red)]">✕</span>
+              <span className="font-display text-3xl font-bold text-[var(--text-primary)]">DETAILING</span>
             </div>
             <p className="font-body text-sm leading-relaxed text-[var(--text-secondary)]">
-              Премиум детейлинг-центр в Махачкале. Защита, полировка и уход за вашим автомобилем на высшем уровне.
+              Премиум детейлинг в Махачкале.
             </p>
             {/* Social links */}
             <div className="flex items-center gap-4 pt-2">
@@ -55,7 +56,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--accent-primary)]"
+                  className="text-[var(--text-muted)] transition-colors duration-200 hover:text-[var(--accent-red)]"
                 >
                   <Icon />
                 </a>
@@ -73,7 +74,7 @@ export default function Footer() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="font-body text-sm text-[var(--text-secondary)] transition-colors duration-200 hover:text-[var(--accent-primary)]"
+                  className="font-body text-sm text-[var(--text-secondary)] transition-colors duration-200 hover:text-[var(--accent-red)]"
                 >
                   {link.label}
                 </Link>
@@ -89,7 +90,7 @@ export default function Footer() {
             <div className="flex flex-col gap-3 font-body text-sm text-[var(--text-secondary)]">
               <a
                 href="tel:+79001234567"
-                className="transition-colors duration-200 hover:text-[var(--accent-primary)]"
+                className="transition-colors duration-200 hover:text-[var(--accent-red)]"
               >
                 +7 (900) 123-45-67
               </a>
@@ -98,7 +99,7 @@ export default function Footer() {
               </address>
               <a
                 href="mailto:info@mm-detailing.ru"
-                className="transition-colors duration-200 hover:text-[var(--accent-primary)]"
+                className="transition-colors duration-200 hover:text-[var(--accent-red)]"
               >
                 info@mm-detailing.ru
               </a>

@@ -32,10 +32,27 @@ export default function CustomCursor() {
       });
     };
 
+    // Обычный hover — курсор увеличивается
     const onEnter = () =>
       gsap.to(circle, { scale: 1.5, duration: 0.3, ease: "power2.out" });
     const onLeave = () =>
-      gsap.to(circle, { scale: 1, duration: 0.3, ease: "power2.out" });
+      gsap.to(circle, { scale: 1, borderColor: "var(--accent-red)", duration: 0.3, ease: "power2.out" });
+
+    // GlassButton / BorderTraceButton hover — курсор уменьшается, border красный
+    const onGlassEnter = () =>
+      gsap.to(circle, {
+        scale: 0.5,
+        borderColor: "var(--accent-red)",
+        duration: 0.3,
+        ease: "power2.out",
+      });
+    const onGlassLeave = () =>
+      gsap.to(circle, {
+        scale: 1,
+        borderColor: "var(--accent-red)",
+        duration: 0.3,
+        ease: "power2.out",
+      });
 
     const onMouseDown = () =>
       gsap.to([dot, circle], { scale: 0.8, duration: 0.1 });
@@ -48,22 +65,35 @@ export default function CustomCursor() {
       gsap.to([dot, circle], { opacity: 1, duration: 0.3 });
 
     const bindInteractive = () => {
-      const els = document.querySelectorAll("a, button, [data-cursor-hover]");
-      els.forEach((el) => {
+      const regular = document.querySelectorAll(
+        "a:not([data-cursor-glass]), button:not([data-cursor-glass]), [data-cursor-hover]"
+      );
+      const glass = document.querySelectorAll<Element>("[data-cursor-glass]");
+
+      regular.forEach((el) => {
         el.addEventListener("mouseenter", onEnter);
         el.addEventListener("mouseleave", onLeave);
       });
-      return els;
+      glass.forEach((el) => {
+        el.addEventListener("mouseenter", onGlassEnter);
+        el.addEventListener("mouseleave", onGlassLeave);
+      });
+
+      return { regular, glass };
     };
 
-    let els = bindInteractive();
+    let bound = bindInteractive();
 
     const observer = new MutationObserver(() => {
-      els.forEach((el) => {
+      bound.regular.forEach((el) => {
         el.removeEventListener("mouseenter", onEnter);
         el.removeEventListener("mouseleave", onLeave);
       });
-      els = bindInteractive();
+      bound.glass.forEach((el) => {
+        el.removeEventListener("mouseenter", onGlassEnter);
+        el.removeEventListener("mouseleave", onGlassLeave);
+      });
+      bound = bindInteractive();
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -79,9 +109,13 @@ export default function CustomCursor() {
       window.removeEventListener("mouseup", onMouseUp);
       document.documentElement.removeEventListener("mouseleave", onDocMouseLeave);
       document.documentElement.removeEventListener("mouseenter", onDocMouseEnter);
-      els.forEach((el) => {
+      bound.regular.forEach((el) => {
         el.removeEventListener("mouseenter", onEnter);
         el.removeEventListener("mouseleave", onLeave);
+      });
+      bound.glass.forEach((el) => {
+        el.removeEventListener("mouseenter", onGlassEnter);
+        el.removeEventListener("mouseleave", onGlassLeave);
       });
       observer.disconnect();
     };
@@ -95,14 +129,14 @@ export default function CustomCursor() {
       <div
         ref={dotRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[9999] h-2 w-2 rounded-full bg-[var(--accent-primary)]"
+        className="pointer-events-none fixed left-0 top-0 z-[9999] h-2 w-2 rounded-full bg-[var(--accent-red)]"
         style={{ willChange: "transform" }}
       />
       {/* Большой круг — следует с lag */}
       <div
         ref={circleRef}
         aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[9998] h-10 w-10 rounded-full border border-[var(--accent-primary)]"
+        className="pointer-events-none fixed left-0 top-0 z-[9998] h-10 w-10 rounded-full border border-[var(--accent-red)]"
         style={{ willChange: "transform" }}
       />
     </>

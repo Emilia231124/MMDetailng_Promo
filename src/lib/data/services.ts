@@ -47,7 +47,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 25000,
     priceUsed: 35000,
     duration: "1–3 дня",
-    gradient: "linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 100%)",
+    gradient: "linear-gradient(135deg, #0a0a0a 0%, #151515 100%)",
   },
   {
     slug: "ceramic",
@@ -70,7 +70,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 15000,
     priceUsed: 22000,
     duration: "1–2 дня",
-    gradient: "linear-gradient(135deg, #1a0d2e 0%, #3a1a5e 100%)",
+    gradient: "linear-gradient(135deg, #0d0d0d 0%, #181818 100%)",
   },
   {
     slug: "polishing",
@@ -93,7 +93,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 8000,
     priceUsed: 12000,
     duration: "4–8 часов",
-    gradient: "linear-gradient(135deg, #2a1800 0%, #4a2d00 100%)",
+    gradient: "linear-gradient(135deg, #080808 0%, #141414 100%)",
   },
   {
     slug: "interior",
@@ -116,7 +116,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 5000,
     priceUsed: 8000,
     duration: "3–5 часов",
-    gradient: "linear-gradient(135deg, #0a1a0a 0%, #1a3a1a 100%)",
+    gradient: "linear-gradient(135deg, #0b0b0b 0%, #161616 100%)",
   },
   {
     slug: "tinting",
@@ -139,7 +139,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 4000,
     priceUsed: 5500,
     duration: "2–4 часа",
-    gradient: "linear-gradient(135deg, #0d0d1a 0%, #1a1a3a 100%)",
+    gradient: "linear-gradient(135deg, #0e0e0e 0%, #191919 100%)",
   },
   {
     slug: "wash",
@@ -162,7 +162,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 2000,
     priceUsed: 2500,
     duration: "1–2 часа",
-    gradient: "linear-gradient(135deg, #1a1000 0%, #2a1800 100%)",
+    gradient: "linear-gradient(135deg, #0c0c0c 0%, #171717 100%)",
   },
   {
     slug: "vinyl-wrap",
@@ -185,7 +185,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 20000,
     priceUsed: 28000,
     duration: "2–5 дней",
-    gradient: "linear-gradient(135deg, #1a0a0a 0%, #3a1515 100%)",
+    gradient: "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)",
   },
   {
     slug: "headlight-polish",
@@ -208,7 +208,7 @@ export const SERVICES: ServiceData[] = [
     priceNew: 3000,
     priceUsed: 3500,
     duration: "2–3 часа",
-    gradient: "linear-gradient(135deg, #1a1500 0%, #2a2200 100%)",
+    gradient: "linear-gradient(135deg, #0d0d0d 0%, #1c1c1c 100%)",
   },
 ];
 

@@ -91,17 +91,17 @@ function Step1({
       {errors.serviceSlug && (
         <p className="mb-4 font-mono text-xs text-red-400">{errors.serviceSlug}</p>
       )}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {SERVICES.map((service) => {
           const selected = form.serviceSlug === service.slug;
           return (
             <button
               key={service.slug}
               onClick={() => setForm({ ...form, serviceSlug: service.slug })}
-              className={`relative flex items-start gap-4 rounded-xl border p-4 text-left transition-colors ${
+              className={`relative flex items-start gap-4 rounded-xl border p-6 text-left transition-colors ${
                 selected
-                  ? "border-[var(--accent-primary)] bg-[var(--bg-elevated)]"
-                  : "border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent-primary)]/50"
+                  ? "border-[var(--accent-red)] bg-[var(--bg-elevated)]"
+                  : "border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent-red)]/50"
               }`}
             >
               {/* Color swatch */}
@@ -110,7 +110,7 @@ function Step1({
                 style={{ background: service.gradient }}
               />
               <div className="min-w-0">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent-primary)]">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--accent-red)]">
                   {service.category}
                 </span>
                 <p className="font-body text-sm font-medium text-[var(--text-primary)]">
@@ -121,7 +121,7 @@ function Step1({
                 </p>
               </div>
               {selected && (
-                <span className="absolute right-3 top-3 font-mono text-xs text-[var(--accent-primary)]">
+                <span className="absolute right-3 top-3 font-mono text-xs text-[var(--accent-red)]">
                   ✓
                 </span>
               )}
@@ -158,7 +158,7 @@ function Step2({
               onChange={(e) => setForm({ ...form, brand: e.target.value })}
               type="text"
               placeholder="BMW, Toyota, Mercedes..."
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)]"
+              className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-red)]"
             />
             {errors.brand && (
               <p className="mt-1 font-mono text-xs text-red-400">{errors.brand}</p>
@@ -173,7 +173,7 @@ function Step2({
               onChange={(e) => setForm({ ...form, model: e.target.value })}
               type="text"
               placeholder="X5, Camry, C-Class..."
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)]"
+              className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-red)]"
             />
             {errors.model && (
               <p className="mt-1 font-mono text-xs text-red-400">{errors.model}</p>
@@ -192,7 +192,7 @@ function Step2({
             min={1990}
             max={new Date().getFullYear()}
             placeholder={String(new Date().getFullYear())}
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)]"
+            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-red)]"
           />
           {errors.year && (
             <p className="mt-1 font-mono text-xs text-red-400">{errors.year}</p>
@@ -208,7 +208,7 @@ function Step2({
           <button
             onClick={() => setForm({ ...form, isNew: !form.isNew })}
             className={`relative h-6 w-11 rounded-full transition-colors ${
-              form.isNew ? "bg-[var(--accent-primary)]" : "bg-[var(--border)]"
+              form.isNew ? "bg-[var(--accent-red)]" : "bg-[var(--border)]"
             }`}
             role="switch"
             aria-checked={form.isNew}
@@ -315,7 +315,7 @@ function Step3({
                 disabled={past}
                 className={`rounded-lg py-2 text-center font-mono text-sm transition-colors ${
                   isSelected
-                    ? "bg-[var(--accent-primary)] text-[var(--bg-primary)]"
+                    ? "bg-[var(--accent-red)] text-[var(--bg-primary)]"
                     : past
                     ? "cursor-not-allowed text-[var(--text-muted)]"
                     : "text-[var(--text-primary)] hover:bg-[var(--bg-primary)]"
@@ -344,8 +344,8 @@ function Step3({
                 onClick={() => setForm({ ...form, timeSlot: slot })}
                 className={`rounded-full px-4 py-2 font-mono text-sm transition-colors ${
                   form.timeSlot === slot
-                    ? "bg-[var(--accent-primary)] text-[var(--bg-primary)]"
-                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-primary)]"
+                    ? "bg-[var(--accent-red)] text-[var(--bg-primary)]"
+                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-red)]"
                 }`}
               >
                 {slot}
@@ -404,7 +404,7 @@ function Step4({
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             type="text"
             placeholder="Ваше имя"
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)]"
+            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-red)]"
           />
           {errors.name && (
             <p className="mt-1 font-mono text-xs text-red-400">{errors.name}</p>
@@ -420,7 +420,7 @@ function Step4({
             onChange={handlePhone}
             type="tel"
             placeholder="+7 (___) ___-__-__"
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)]"
+            className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-red)]"
           />
           {errors.phone && (
             <p className="mt-1 font-mono text-xs text-red-400">{errors.phone}</p>
@@ -436,7 +436,7 @@ function Step4({
             onChange={(e) => setForm({ ...form, notes: e.target.value })}
             rows={3}
             placeholder="Дополнительные пожелания..."
-            className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-primary)]"
+            className="w-full resize-none rounded-lg border border-[var(--border)] bg-[var(--bg-primary)] px-4 py-3 font-body text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] outline-none focus:border-[var(--accent-red)]"
           />
         </div>
       </div>
@@ -489,7 +489,7 @@ function Step5({ form, service }: { form: FormState; service?: ServiceData }) {
             <span
               className={`font-body text-sm ${
                 label === "Примерная цена"
-                  ? "font-mono text-[var(--accent-primary)]"
+                  ? "font-mono text-[var(--accent-red)]"
                   : "text-[var(--text-primary)]"
               }`}
             >
@@ -605,8 +605,8 @@ export default function BookingWizard() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[var(--bg-primary)] px-4 pt-24">
         <div className="max-w-md text-center">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--accent-primary)]">
-            <span className="font-mono text-2xl text-[var(--accent-primary)]">✓</span>
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full border border-[var(--accent-red)]">
+            <span className="font-mono text-2xl text-[var(--accent-red)]">✓</span>
           </div>
           <h1 className="font-display text-4xl font-bold uppercase text-[var(--text-primary)]">
             Запись создана!
@@ -614,7 +614,7 @@ export default function BookingWizard() {
           <p className="mt-4 font-body text-[var(--text-secondary)]">
             Мы свяжемся с вами в течение 30 минут для подтверждения записи.
           </p>
-          <p className="mt-2 font-mono text-sm text-[var(--accent-primary)]">
+          <p className="mt-2 font-mono text-sm text-[var(--accent-red)]">
             {service?.title} · {form.date} · {form.timeSlot}
           </p>
         </div>
@@ -624,10 +624,10 @@ export default function BookingWizard() {
 
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] pt-24">
-      <div className="mx-auto max-w-2xl px-4 sm:px-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
         {/* Page title */}
         <div className="mb-10">
-          <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+          <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
             Онлайн-запись
           </span>
           <h1 className="mt-1 font-display text-4xl font-bold uppercase text-[var(--text-primary)] md:text-5xl">
@@ -647,14 +647,14 @@ export default function BookingWizard() {
                   <div
                     className={`h-0.5 rounded-full transition-colors ${
                       done || active
-                        ? "bg-[var(--accent-primary)]"
+                        ? "bg-[var(--accent-red)]"
                         : "bg-[var(--border)]"
                     }`}
                   />
                   <p
-                    className={`mt-1 hidden font-mono text-[10px] uppercase tracking-widest transition-colors sm:block ${
+                    className={`mt-1 hidden font-mono text-sm uppercase tracking-widest transition-colors sm:block ${
                       active
-                        ? "text-[var(--accent-primary)]"
+                        ? "text-[var(--accent-red)]"
                         : done
                         ? "text-[var(--text-secondary)]"
                         : "text-[var(--text-muted)]"
@@ -708,14 +708,14 @@ export default function BookingWizard() {
           {step < 5 ? (
             <button
               onClick={next}
-              className="rounded-full bg-[var(--accent-primary)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
+              className="rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
             >
               Далее →
             </button>
           ) : (
             <button
               onClick={submit}
-              className="rounded-full bg-[var(--accent-primary)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
+              className="rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
             >
               Подтвердить запись
             </button>

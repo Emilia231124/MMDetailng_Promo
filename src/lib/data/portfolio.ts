@@ -18,7 +18,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     serviceSlug: "ppf",
     category: "Защита",
     gradientBefore: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
-    gradientAfter: "linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 100%)",
+    gradientAfter: "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)",
   },
   {
     id: "2",
@@ -27,7 +27,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     serviceSlug: "ceramic",
     category: "Защита",
     gradientBefore: "linear-gradient(135deg, #222222 0%, #333333 100%)",
-    gradientAfter: "linear-gradient(135deg, #1a0d2e 0%, #3a1a5e 100%)",
+    gradientAfter: "linear-gradient(135deg, #101010 0%, #1c1c1c 100%)",
   },
   {
     id: "3",
@@ -35,8 +35,8 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     description: "Двухстадийная коррекция лака с устранением 95% дефектов. Финишное покрытие карнаубским воском.",
     serviceSlug: "polishing",
     category: "Восстановление",
-    gradientBefore: "linear-gradient(135deg, #2a2000 0%, #3a2d00 100%)",
-    gradientAfter: "linear-gradient(135deg, #3a2800 0%, #5c4200 100%)",
+    gradientBefore: "linear-gradient(135deg, #1a1a1a 0%, #252525 100%)",
+    gradientAfter: "linear-gradient(135deg, #111111 0%, #1e1e1e 100%)",
   },
   {
     id: "4",
@@ -44,8 +44,8 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     description: "Полная химчистка кожаного салона: экстракция, кондиционирование, озонирование. Результат — как из автосалона.",
     serviceSlug: "interior",
     category: "Уход",
-    gradientBefore: "linear-gradient(135deg, #1a1000 0%, #2a1800 100%)",
-    gradientAfter: "linear-gradient(135deg, #0a1a0a 0%, #1a3a1a 100%)",
+    gradientBefore: "linear-gradient(135deg, #141414 0%, #1f1f1f 100%)",
+    gradientAfter: "linear-gradient(135deg, #0d0d0d 0%, #181818 100%)",
   },
   {
     id: "5",
@@ -53,7 +53,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     description: "Полная оклейка кузова в матовый антрацит Hexis. Смена цвета с белого на тёмный без покраски.",
     serviceSlug: "vinyl-wrap",
     category: "Стайлинг",
-    gradientBefore: "linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%)",
+    gradientBefore: "linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)",
     gradientAfter: "linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)",
   },
   {
@@ -63,7 +63,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     serviceSlug: "tinting",
     category: "Стайлинг",
     gradientBefore: "linear-gradient(135deg, #303030 0%, #404040 100%)",
-    gradientAfter: "linear-gradient(135deg, #0d0d1a 0%, #1a1a3a 100%)",
+    gradientAfter: "linear-gradient(135deg, #0e0e0e 0%, #191919 100%)",
   },
   {
     id: "7",
@@ -71,8 +71,8 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     description: "Восстановление пожелтевших фар с нанесением УФ-защитного лака. Видимость в ночное время улучшена на 80%.",
     serviceSlug: "headlight-polish",
     category: "Восстановление",
-    gradientBefore: "linear-gradient(135deg, #3a3000 0%, #4a3d00 100%)",
-    gradientAfter: "linear-gradient(135deg, #1a1500 0%, #2a2200 100%)",
+    gradientBefore: "linear-gradient(135deg, #161616 0%, #212121 100%)",
+    gradientAfter: "linear-gradient(135deg, #0f0f0f 0%, #1b1b1b 100%)",
   },
   {
     id: "8",
@@ -81,7 +81,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     serviceSlug: "ppf",
     category: "Защита",
     gradientBefore: "linear-gradient(135deg, #1c1c1c 0%, #2a2a2a 100%)",
-    gradientAfter: "linear-gradient(135deg, #0d1b2a 0%, #1b3a5c 100%)",
+    gradientAfter: "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)",
   },
   {
     id: "9",
@@ -89,7 +89,7 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     description: "Комплексная чистка: алькантара, перфорированная кожа, деревянные вставки, потолок. До и после — небо и земля.",
     serviceSlug: "interior",
     category: "Уход",
-    gradientBefore: "linear-gradient(135deg, #1a1200 0%, #2d1e00 100%)",
-    gradientAfter: "linear-gradient(135deg, #0a1a0a 0%, #1a3a1a 100%)",
+    gradientBefore: "linear-gradient(135deg, #131313 0%, #1e1e1e 100%)",
+    gradientAfter: "linear-gradient(135deg, #0d0d0d 0%, #181818 100%)",
   },
 ];

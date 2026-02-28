@@ -1,7 +1,7 @@
 "use client";
 
 interface SectionHeadingProps {
-  label?: string;        // Маленький текст сверху (font-mono, accent-primary)
+  label?: string;        // Маленький текст сверху (font-mono, accent-red)
   title: string;         // Основной заголовок (font-display)
   description?: string;  // Подзаголовок (text-secondary)
   /** @deprecated Используй description */
@@ -29,18 +29,18 @@ export default function SectionHeading({
   return (
     <div className={`flex flex-col ${alignClass} ${className}`}>
       {label && (
-        <span className="mb-3 font-mono text-xs uppercase tracking-widest text-[var(--accent-primary)]">
+        <span className="mb-3 font-mono text-sm uppercase tracking-widest text-[var(--accent-red)]">
           {label}
         </span>
       )}
-      <h2 className="font-display text-4xl font-bold uppercase leading-tight text-[var(--text-primary)] md:text-5xl lg:text-6xl">
+      <h2 className="font-display text-5xl font-bold uppercase leading-tight tracking-tight text-[var(--text-primary)] md:text-6xl lg:text-7xl">
         {title}
       </h2>
       {align === "center" && (
-        <div className="mt-5 h-px w-20 bg-[var(--accent-primary)]" />
+        <div className="mt-5 h-px w-20 bg-[var(--accent-red)]" />
       )}
       {desc && (
-        <p className="mt-4 max-w-xl font-body text-base text-[var(--text-secondary)] md:text-lg">
+        <p className="mt-4 max-w-xl font-body text-lg tracking-wide text-[var(--text-secondary)] md:text-xl">
           {desc}
         </p>
       )}

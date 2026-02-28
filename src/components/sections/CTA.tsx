@@ -3,25 +3,23 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
-import MagneticButton from "@/components/ui/MagneticButton";
+import GlassButton from "@/components/ui/GlassButton";
+import BorderTraceButton from "@/components/ui/BorderTraceButton";
 
 const PHONE = "+7 (928) 000-00-00";
 const PHONE_HREF = "tel:+79280000000";
-const WHATSAPP_HREF = "https://wa.me/79280000000";
 
 export default function CTA() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const buttonsRef = useRef<HTMLDivElement>(null);
-  const noteRef = useRef<HTMLParagraphElement>(null);
 
   useGSAP(
     () => {
       const title = titleRef.current;
       const subtitle = subtitleRef.current;
       const buttons = buttonsRef.current;
-      const note = noteRef.current;
       if (!title) return;
 
       // Title: scale + opacity driven by scroll (scrub)
@@ -41,8 +39,8 @@ export default function CTA() {
         }
       );
 
-      // Subtitle + buttons + note: stagger fade-in
-      const elements = [subtitle, buttons, note].filter(Boolean);
+      // Subtitle + buttons: stagger fade-in
+      const elements = [subtitle, buttons].filter(Boolean);
       gsap.fromTo(
         elements,
         { opacity: 0, y: 30 },
@@ -65,7 +63,7 @@ export default function CTA() {
       className="flex h-[70vh] items-center justify-center overflow-hidden"
       style={{
         background:
-          "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(200,169,126,0.05) 0%, var(--bg-secondary) 60%, var(--bg-primary) 100%)",
+          "radial-gradient(ellipse 80% 60% at 50% 50%, rgba(196,30,42,0.05) 0%, var(--bg-secondary) 60%, var(--bg-primary) 100%)",
       }}
       aria-label="Записаться на детейлинг"
     >
@@ -90,35 +88,14 @@ export default function CTA() {
           ref={buttonsRef}
           className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
         >
-          <MagneticButton
-            href="/booking"
-            className="w-full bg-[var(--accent-primary)] px-10 py-4 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity duration-300 hover:opacity-80 sm:w-auto"
-          >
+          <GlassButton href="/booking" variant="red" size="lg" className="w-full sm:w-auto">
             Записаться онлайн
-          </MagneticButton>
-          <MagneticButton
-            href={PHONE_HREF}
-            className="w-full border border-[var(--accent-primary)] px-10 py-4 font-mono text-sm uppercase tracking-widest text-[var(--accent-primary)] transition-colors duration-300 hover:bg-[var(--accent-primary)] hover:text-[var(--bg-primary)] sm:w-auto"
-          >
+          </GlassButton>
+          <BorderTraceButton href={PHONE_HREF} traceColor="white" className="w-full sm:w-auto">
             {PHONE}
-          </MagneticButton>
+          </BorderTraceButton>
         </div>
 
-        {/* WhatsApp note */}
-        <p
-          ref={noteRef}
-          className="mt-6 font-body text-sm text-[var(--text-muted)]"
-        >
-          или напишите нам в{" "}
-          <a
-            href={WHATSAPP_HREF}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[var(--accent-primary)] underline underline-offset-4 transition-opacity hover:opacity-70"
-          >
-            WhatsApp
-          </a>
-        </p>
 
       </div>
     </section>
