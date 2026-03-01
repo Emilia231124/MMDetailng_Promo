@@ -1,47 +1,77 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+import Image from "next/image";
 
-// ---------------------------------------------------------------------------
-// Types & Data
-// ---------------------------------------------------------------------------
+/* ═══════════════════════════════════════════════════════════════
+   НАСТРАИВАЕМЫЕ ПАРАМЕТРЫ
 
-interface ShowcaseSlide {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  /** Путь к фото относительно /public. Файлы: /public/images/services/ppf.png и т.д. */
-  image: string;
-}
+   Чтобы подкрутить анимацию — меняй значения здесь.
+   После изменения сохрани файл → страница перезагрузится (HMR).
 
-const SLIDES: ShowcaseSlide[] = [
+   ОБЩЕЕ ПРАВИЛО:
+   - Все значения фаз — в секундах на timeline (не реальных секундах,
+     а "условных единицах" длины timeline).
+   - Чем больше число — тем дольше длится фаза.
+   ═══════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  // ── Сколько vh скролла = 1 слайд ──
+  // Больше → медленнее, больше скроллить. Меньше → быстрее.
+  // Рекомендую: 3 (средне), 4 (медленно), 2.5 (быстро)
+  scrollPerSlide: 3.5,
+
+  // ── Плавность привязки к скроллу (GSAP scrub) ──
+  // Число = секунды "отставания" анимации от скролла.
+  // 0.5 = отзывчиво, 1 = плавно, 2 = очень тягуче
+  scrub: 1.2,
+
+  // ── Длительности фаз (условные единицы timeline) ──
+  // Можешь менять пропорции. Сумма = общая длина цикла одного слайда.
+  phase1_darkness: 0.03,      // Темнота в начале
+  phase2_imageIn: 0.5,       // Проявление фото
+  phase3_titleIn: 0.5,       // Появление заголовка
+  phase4_descIn: 0.5,        // Появление description
+  phase4_pause: 0.02,         // Пауза (всё видно, чтение)
+  phase5_fadeOut: 0.4,       // Затухание всего
+  phase5_darkness: 0.03,      // Темнота в конце (буфер перед след. слайдом)
+
+  // ── Заголовок ──
+  titleMaxOpacity: 0.7,      // Макс. прозрачность (0.7 = полупрозрачный, 1 = непрозрачный)
+  titleRise: 50,             // На сколько px поднимается снизу (20=лёгкий, 50=средний, 80=сильный)
+
+  // ── Description ──
+  descMaxOpacity: 1,         // Макс. прозрачность
+  descRise: 30,              // На сколько px поднимается
+
+  // ── Фото ──
+  imageScale: 1.0,          // Начальный масштаб (zoom-out эффект). 1.0 = без зума.
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   ДАННЫЕ СЛАЙДОВ
+   ═══════════════════════════════════════════════════════════════ */
+const slides = [
   {
     id: "ppf",
     title: "ЗАЩИТНАЯ ПЛЁНКА",
     subtitle: "PAINT PROTECTION FILM",
-    description:
-      "Невидимая броня для вашего автомобиля. Защита от сколов, царапин и дорожных реагентов.",
+    description: "Невидимая броня для вашего автомобиля. Защита от сколов, царапин и дорожных реагентов.",
     image: "/images/services/ppf.png",
   },
   {
     id: "ceramic",
     title: "КЕРАМИКА",
     subtitle: "CERAMIC COATING",
-    description:
-      "Нанокерамическое покрытие с гидрофобным эффектом. Блеск и защита на годы.",
+    description: "Нанокерамическое покрытие с гидрофобным эффектом. Блеск и защита на годы.",
     image: "/images/services/ceramic.png",
   },
   {
     id: "polish",
     title: "ПОЛИРОВКА",
     subtitle: "PAINT CORRECTION",
-    description:
-      "Восстановление идеального блеска. Удаление царапин, голограмм и окислов.",
+    description: "Восстановление идеального блеска. Удаление царапин, голограмм и окислов.",
     image: "/images/services/polish.png",
   },
   {
@@ -51,174 +81,206 @@ const SLIDES: ShowcaseSlide[] = [
     description: "Глубокая чистка салона до заводского состояния.",
     image: "/images/services/interior.png",
   },
-];
+] as const;
 
-// ---------------------------------------------------------------------------
-// Component
-// ---------------------------------------------------------------------------
-
+/* ═══════════════════════════════════════════════════════════════
+   КОМПОНЕНТ
+   ═══════════════════════════════════════════════════════════════ */
 export default function PinnedShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
+  const pinRef = useRef<HTMLDivElement>(null);
 
-  // Per-slide refs
-  const slideRefs = useRef<HTMLDivElement[]>([]);
-  const bgRefs = useRef<HTMLDivElement[]>([]);
-  const subtitleRefs = useRef<HTMLSpanElement[]>([]);
-  const titleRefs = useRef<HTMLHeadingElement[]>([]);
-  const descRefs = useRef<HTMLParagraphElement[]>([]);
+  // Refs для каждого слайда
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const titleRefs = useRef<(HTMLHeadingElement | null)[]>([]);
+  const subtitleRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const descRefs = useRef<(HTMLParagraphElement | null)[]>([]);
 
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const sectionHeight = isMobile
-    ? `${SLIDES.length * 250}vh`
-    : `${SLIDES.length * 300}vh`;
+  useGSAP(() => {
+    if (!sectionRef.current || !pinRef.current) return;
 
-  useGSAP(
-    () => {
-      const section = sectionRef.current;
-      if (!section) return;
+    // Длина цикла одного слайда на timeline
+    const slideDuration =
+      CONFIG.phase1_darkness +
+      CONFIG.phase2_imageIn +
+      CONFIG.phase3_titleIn +
+      CONFIG.phase4_descIn +
+      CONFIG.phase4_pause +
+      CONFIG.phase5_fadeOut +
+      CONFIG.phase5_darkness;
 
-      const prefersReduced = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      ).matches;
+    // ── MASTER TIMELINE ──
+    const master = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: () => `+=${slides.length * CONFIG.scrollPerSlide * window.innerHeight}`,
+        pin: pinRef.current,
+        scrub: CONFIG.scrub,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
 
-      // ── Initial states ──────────────────────────────────────────────────
-      SLIDES.forEach((_, i) => {
-        gsap.set(slideRefs.current[i], { autoAlpha: 0 });
-        gsap.set(bgRefs.current[i], { scale: prefersReduced ? 1 : 1.05 });
-        gsap.set(subtitleRefs.current[i], { autoAlpha: 0, y: prefersReduced ? 0 : 20 });
-        gsap.set(titleRefs.current[i], { autoAlpha: 0, y: prefersReduced ? 0 : 40 });
-        gsap.set(descRefs.current[i], { autoAlpha: 0, y: prefersReduced ? 0 : 20 });
-      });
+    // ── Начальное состояние: ВСЁ скрыто ──
+    slides.forEach((_, i) => {
+      gsap.set(imageRefs.current[i], { opacity: 0, scale: CONFIG.imageScale });
+      gsap.set(titleRefs.current[i], { opacity: 0, y: CONFIG.titleRise });
+      gsap.set(subtitleRefs.current[i], { opacity: 0, y: 20 });
+      gsap.set(descRefs.current[i], { opacity: 0, y: CONFIG.descRise });
+    });
 
-      // ── Master timeline driven by scroll ────────────────────────────────
-      // Each SCREEN unit = one slide's scroll distance in the timeline
-      const SCREEN = 1;
+    // ── Для каждого слайда добавляем анимации на master timeline ──
+    slides.forEach((_, i) => {
+      const img = imageRefs.current[i];
+      const title = titleRefs.current[i];
+      const subtitle = subtitleRefs.current[i];
+      const desc = descRefs.current[i];
+      if (!img || !title || !desc) return;
 
-      const masterTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-        },
-      });
+      // Позиция старта этого слайда на master timeline
+      const offset = i * slideDuration;
 
-      SLIDES.forEach((_, i) => {
-        const t = i * SCREEN;
+      // Курсор — текущая позиция внутри цикла слайда
+      let cursor = offset;
 
-        const slide = slideRefs.current[i];
-        const bg = bgRefs.current[i];
-        const subtitle = subtitleRefs.current[i];
-        const title = titleRefs.current[i];
-        const desc = descRefs.current[i];
+      // ── ФАЗА 1: Темнота (ничего не делаем, просто ждём) ──
+      cursor += CONFIG.phase1_darkness;
 
-        const prevSlide = i > 0 ? slideRefs.current[i - 1] : null;
-        const prevBg = i > 0 ? bgRefs.current[i - 1] : null;
+      // ── ФАЗА 2: Фото проявляется ──
+      master.to(img, {
+        opacity: 1,
+        scale: 1,
+        duration: CONFIG.phase2_imageIn,
+        ease: "none",
+      }, cursor);
+      cursor += CONFIG.phase2_imageIn;
 
-        // Phase 1 — Entry: slide fades in, bg zooms in (t → t+0.3)
-        masterTl.to(slide, { autoAlpha: 1, duration: 0.3 }, t);
-        masterTl.to(bg, { scale: 1, duration: 0.5, ease: "power2.out" }, t);
+      // ── ФАЗА 3: Заголовок появляется (подъём + fade до 0.7) ──
+      // Subtitle чуть раньше
+      master.to(subtitle, {
+        opacity: 0.5,
+        y: 0,
+        duration: CONFIG.phase3_titleIn * 0.6,
+        ease: "power2.out",
+      }, cursor);
 
-        // Simultaneously: previous slide dims and scales back
-        if (prevSlide) {
-          masterTl.to(
-            prevBg!,
-            { scale: prefersReduced ? 1 : 0.98, duration: 0.3 },
-            t
-          );
-          masterTl.to(prevSlide, { autoAlpha: 0, duration: 0.3 }, t + 0.7);
-        }
+      master.to(title, {
+        opacity: CONFIG.titleMaxOpacity,
+        y: 0,
+        duration: CONFIG.phase3_titleIn,
+        ease: "power2.out",
+      }, cursor);
+      cursor += CONFIG.phase3_titleIn;
 
-        // Phase 2 — Content reveal
-        masterTl.to(
-          subtitle,
-          { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" },
-          t + 0.25
-        );
-        masterTl.to(
-          title,
-          { autoAlpha: 1, y: 0, duration: 0.25, ease: "power2.out" },
-          t + 0.35
-        );
-        masterTl.to(
-          desc,
-          { autoAlpha: 1, y: 0, duration: 0.2, ease: "power2.out" },
-          t + 0.5
-        );
+      // ── ФАЗА 4: Description появляется ──
+      master.to(desc, {
+        opacity: CONFIG.descMaxOpacity,
+        y: 0,
+        duration: CONFIG.phase4_descIn,
+        ease: "power2.out",
+      }, cursor);
+      cursor += CONFIG.phase4_descIn;
 
-        // Phase 3 — Exit: text lifts out (only non-last slides)
-        if (i < SLIDES.length - 1) {
-          masterTl.to(
-            [subtitle, title, desc],
-            {
-              autoAlpha: 0,
-              y: prefersReduced ? 0 : -20,
-              duration: 0.15,
-              stagger: 0.03,
-            },
-            t + 0.75
-          );
-        }
-      });
-    },
-    { scope: sectionRef }
-  );
+      // ── ПАУЗА: всё видно (ничего не анимируем) ──
+      cursor += CONFIG.phase4_pause;
 
-  // ── Render ───────────────────────────────────────────────────────────────
+      // ── ФАЗА 5: Всё затухает одновременно ──
+      master.to(img, {
+        opacity: 0,
+        duration: CONFIG.phase5_fadeOut,
+        ease: "none",
+      }, cursor);
+
+      master.to(title, {
+        opacity: 0,
+        duration: CONFIG.phase5_fadeOut,
+        ease: "none",
+      }, cursor);
+
+      master.to(subtitle, {
+        opacity: 0,
+        duration: CONFIG.phase5_fadeOut,
+        ease: "none",
+      }, cursor);
+
+      master.to(desc, {
+        opacity: 0,
+        duration: CONFIG.phase5_fadeOut,
+        ease: "none",
+      }, cursor);
+
+      // cursor += CONFIG.phase5_fadeOut;
+      // phase5_darkness — пустое время (темнота) перед следующим слайдом
+    });
+
+  }, { scope: sectionRef });
+
   return (
     <section
       ref={sectionRef}
-      aria-label="Наши услуги"
-      style={{ height: sectionHeight }}
+      className="relative"
+      style={{ height: `${slides.length * CONFIG.scrollPerSlide * 100}vh` }}
     >
-      <div className="sticky top-0 h-screen overflow-hidden bg-[var(--bg-primary)]">
-        {SLIDES.map((slide, i) => (
-          <div
-            key={slide.id}
-            ref={(el) => { if (el) slideRefs.current[i] = el; }}
-            className="absolute inset-0"
-          >
-            {/* Background image */}
+      {/* Pinned контейнер — весь экран, не двигается при скролле */}
+      <div
+        ref={pinRef}
+        className="relative w-full h-screen overflow-hidden bg-[var(--bg-primary)]"
+      >
+        {slides.map((slide, i) => (
+          <div key={slide.id} className="absolute inset-0 pointer-events-none">
+
+            {/* ── Фоновое изображение ── */}
             <div
-              ref={(el) => { if (el) bgRefs.current[i] = el; }}
-              className="absolute inset-0"
+              ref={(el) => { imageRefs.current[i] = el; }}
+              className="absolute inset-0 will-change-transform"
+              style={{ opacity: 0 }}
             >
               <Image
                 src={slide.image}
                 alt={slide.title}
                 fill
-                className="object-cover object-center"
+                className="object-cover"
+                sizes="100vw"
                 priority={i === 0}
+                quality={85}
               />
+
+              {/* Overlay для читаемости текста поверх фото */}
+              <div className="absolute inset-0 bg-[rgba(5,5,5,0.30)]" />
             </div>
 
-            {/* Overlay — многослойный, для читаемости текста */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[rgba(5,5,5,0.4)] to-transparent" />
-            <div className="absolute inset-0 bg-[rgba(5,5,5,0.25)]" />
+            {/* ── Текст — СТРОГО ПО ЦЕНТРУ экрана ── */}
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6">
 
-            {/* Текстовый блок — нижняя треть, левый край */}
-            <div className="absolute inset-x-0 bottom-0 z-10 px-6 pb-12 md:px-16 md:pb-24 lg:px-24">
+              {/* Subtitle */}
               <span
-                ref={(el) => { if (el) subtitleRefs.current[i] = el; }}
-                className="block font-mono text-xs md:text-sm uppercase tracking-[0.3em] text-[var(--accent-red)] mb-4 md:mb-6"
+                ref={(el) => { subtitleRefs.current[i] = el; }}
+                className="font-mono text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[var(--accent-red)] mb-3 sm:mb-4 md:mb-6"
+                style={{ opacity: 0 }}
               >
                 {slide.subtitle}
               </span>
 
+              {/* Заголовок — крупный, по центру, ПОЛУПРОЗРАЧНЫЙ */}
               <h3
-                ref={(el) => { if (el) titleRefs.current[i] = el; }}
-                className="font-display text-4xl md:text-7xl lg:text-8xl font-bold text-white leading-[0.9] tracking-tight"
+                ref={(el) => { titleRefs.current[i] = el; }}
+                className="font-display text-[2rem] sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white text-center uppercase leading-[0.9] tracking-tight"
+                style={{ opacity: 0 }}
               >
                 {slide.title}
               </h3>
 
+              {/* Description — под заголовком, по центру */}
               <p
-                ref={(el) => { if (el) descRefs.current[i] = el; }}
-                className="mt-6 md:mt-8 text-base md:text-lg text-white/60 max-w-lg leading-relaxed"
+                ref={(el) => { descRefs.current[i] = el; }}
+                className="mt-4 sm:mt-6 md:mt-8 text-xs sm:text-sm md:text-base lg:text-lg text-white/80 text-center max-w-md md:max-w-xl leading-relaxed tracking-wide uppercase"
+                style={{ opacity: 0 }}
               >
                 {slide.description}
               </p>
             </div>
+
           </div>
         ))}
       </div>
