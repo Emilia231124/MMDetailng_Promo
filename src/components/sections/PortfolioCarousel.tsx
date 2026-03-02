@@ -1,413 +1,233 @@
-"use client";
+'use client';
 
-import { useRef, useState, useCallback } from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsap-config";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useRef, useEffect, useState, useCallback } from 'react';
+import { gsap, Draggable } from '@/lib/gsap-config';
 
-// ---------------------------------------------------------------------------
-// Data
-// ---------------------------------------------------------------------------
+// ─── Данные ───────────────────────────────────────────────────────────────────
 
-interface CarouselItem {
-  id: string;
+interface Slide {
+  id: number;
+  category: string;
   title: string;
-  category: "PPF" | "Ceramic" | "Polish" | "Interior";
+  // Градиенты вместо изображений (placeholder до появления реальных фото)
+  gradient: string;
 }
 
-const ITEMS: CarouselItem[] = [
-  { id: "1", title: "BMW X5", category: "PPF" },
-  { id: "2", title: "Mercedes S-Class", category: "Ceramic" },
-  { id: "3", title: "Porsche 911", category: "Polish" },
-  { id: "4", title: "Range Rover Sport", category: "Interior" },
-  { id: "5", title: "Audi RS7", category: "PPF" },
-  { id: "6", title: "Lamborghini Urus", category: "Ceramic" },
-  { id: "7", title: "Tesla Model S", category: "Polish" },
-  { id: "8", title: "Toyota Land Cruiser", category: "Interior" },
+const slides: Slide[] = [
+  { id: 1, category: 'PPF',      title: 'BMW X5',              gradient: 'linear-gradient(135deg, #1a0a0a 0%, #2d1010 100%)' },
+  { id: 2, category: 'CERAMIC',  title: 'Mercedes S-Class',    gradient: 'linear-gradient(135deg, #0a0a1a 0%, #10102d 100%)' },
+  { id: 3, category: 'INTERIOR', title: 'Toyota Land Cruiser', gradient: 'linear-gradient(135deg, #0a1a0a 0%, #10201a 100%)' },
+  { id: 4, category: 'POLISH',   title: 'Porsche Cayenne',     gradient: 'linear-gradient(135deg, #1a1a0a 0%, #2d2d10 100%)' },
+  { id: 5, category: 'PPF',      title: 'Audi Q8',             gradient: 'linear-gradient(135deg, #1a0a1a 0%, #2d102d 100%)' },
+  { id: 6, category: 'TINT',     title: 'Range Rover Sport',   gradient: 'linear-gradient(135deg, #0a1a1a 0%, #10282d 100%)' },
+  { id: 7, category: 'CERAMIC',  title: 'Lexus LX',            gradient: 'linear-gradient(135deg, #150a0a 0%, #251515 100%)' },
+  { id: 8, category: 'INTERIOR', title: 'BMW 7 Series',        gradient: 'linear-gradient(135deg, #0f0f0f 0%, #1c1c1c 100%)' },
 ];
 
-const CARD_COUNT = ITEMS.length; // 8
-const RADIUS = 420; // px — cylinder radius for 3D layout
-const CARD_W = 320; // px
-const CARD_H = 420; // px
-const SENSITIVITY = 0.28; // px drag → degrees rotation
+const CARD_COUNT = slides.length;
+const ROTATION_STEP = 45; // 45° между карточками
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
+// ─── Размеры ──────────────────────────────────────────────────────────────────
+const CARD_SIZE    = 300; // px — квадрат на мобайле
+const CARD_SIZE_MD = 450; // px — квадрат на десктопе
+const RADIUS       = 380; // расстояние от центра до карточек (мобайл)
+const RADIUS_MD    = 650; // расстояние от центра до карточек (десктоп)
 
-const CARD_BG = "linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)";
-
-// ---------------------------------------------------------------------------
-// Mobile carousel (scroll-snap)
-// ---------------------------------------------------------------------------
-
-function CarouselMobile({ items }: { items: CarouselItem[] }) {
-  return (
-    <div
-      className="flex gap-4 overflow-x-auto px-4 pb-6 snap-x snap-mandatory"
-      style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-    >
-      {items.map((item) => (
-        <div
-          key={item.id}
-          className="flex-shrink-0 snap-center rounded-2xl overflow-hidden relative"
-          style={{
-            width: "80vw",
-            height: 380,
-            background: CARD_BG,
-            border: "1px solid var(--border)",
-          }}
-        >
-          {/* TODO: Replace with:
-            <Image src={item.image} alt={item.title} fill className="object-cover" />
-          */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span
-              className="font-display text-[18vw] font-bold uppercase leading-none"
-              style={{ color: "rgba(255,255,255,0.06)" }}
-            >
-              {item.category}
-            </span>
-          </div>
-          {/* Overlay */}
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 55%)",
-            }}
-          />
-          <div className="absolute bottom-0 left-0 right-0 p-5">
-            <span
-              className="font-mono text-xs uppercase tracking-widest"
-              style={{ color: "var(--accent-red)" }}
-            >
-              {item.category}
-            </span>
-            <p className="mt-1 font-body text-lg text-[var(--text-primary)]">
-              {item.title}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Main component
-// ---------------------------------------------------------------------------
+// ─── Компонент ────────────────────────────────────────────────────────────────
 
 export default function PortfolioCarousel() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<HTMLDivElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
+  const sectionRef   = useRef<HTMLElement>(null);
+  const cylinderRef  = useRef<HTMLDivElement>(null);
+  const imagesRef    = useRef<(HTMLDivElement | null)[]>([]);
+  const currentAngle = useRef(0);
+  const dragStartAngle = useRef(0);
 
-  // Drag state — refs for mutable values (no re-renders during drag)
-  const currentRotationRef = useRef(0);
-  const isDraggingRef = useRef(false);
-  const startXRef = useRef(0);
-  const startRotationRef = useRef(0);
-  const lastXRef = useRef(0);
-  const lastTimeRef = useRef(Date.now());
-  const velocityRef = useRef(0);
+  const [isMd, setIsMd] = useState(false);
 
-  const [isHovering, setIsHovering] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  // Responsive breakpoint
+  useEffect(() => {
+    const check = () => setIsMd(window.innerWidth >= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
-  // ── Cursor follow ──────────────────────────────────────────────────────────
-  useGSAP(() => {
-    const cursor = cursorRef.current;
-    if (!cursor || !isDesktop) return;
+  const radius   = isMd ? RADIUS_MD   : RADIUS;
+  const cardSize = isMd ? CARD_SIZE_MD : CARD_SIZE;
 
-    const onMove = (e: MouseEvent) => {
-      gsap.to(cursor, {
-        x: e.clientX - 40,
-        y: e.clientY - 40,
-        duration: 0.3,
-        ease: "power2.out",
-        overwrite: "auto",
-      });
-    };
-
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [isDesktop]);
-
-  // ── Entrance animations ────────────────────────────────────────────────────
-  useGSAP(
-    () => {
-      const header = headerRef.current;
-      const scene = sceneRef.current;
-      const carousel = carouselRef.current;
-      if (!header) return;
-
-      // Header elements stagger reveal
-      const headerChildren = Array.from(header.children) as HTMLElement[];
-      gsap.fromTo(
-        headerChildren,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: { trigger: header, start: "top 85%" },
-        }
-      );
-
-      if (!scene || !carousel) return;
-
-      // Scene entrance
-      gsap.set(scene, { opacity: 0, y: 60 });
-
-      ScrollTrigger.create({
-        trigger: scene,
-        start: "top 80%",
-        once: true,
-        onEnter: () => {
-          gsap.to(scene, { opacity: 1, y: 0, duration: 1, ease: "power2.out" });
-
-          // Rotation hint — invites user to drag
-          gsap.to(carousel, {
-            rotateY: -28,
-            duration: 1.6,
-            ease: "power2.inOut",
-            delay: 0.4,
-            onUpdate() {
-              currentRotationRef.current = gsap.getProperty(
-                carousel,
-                "rotateY"
-              ) as number;
-            },
-            onComplete() {
-              gsap.to(carousel, {
-                rotateY: 0,
-                duration: 2,
-                ease: "power2.inOut",
-                onUpdate() {
-                  currentRotationRef.current = gsap.getProperty(
-                    carousel,
-                    "rotateY"
-                  ) as number;
-                },
-              });
-            },
-          });
-        },
-      });
-    },
-    { scope: sectionRef, dependencies: [isDesktop] }
-  );
-
-  // ── Drag handlers ──────────────────────────────────────────────────────────
-  const handlePointerDown = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDesktop) return;
-      isDraggingRef.current = true;
-      startXRef.current = e.clientX;
-      startRotationRef.current = currentRotationRef.current;
-      lastXRef.current = e.clientX;
-      lastTimeRef.current = Date.now();
-      velocityRef.current = 0;
-
-      // Kill any running inertia tween
-      gsap.killTweensOf(carouselRef.current);
-
-      // Cursor shrink on press
-      gsap.to(cursorRef.current, { scale: 0.8, duration: 0.15 });
-
-      // Capture pointer so drag continues outside element bounds
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    },
-    [isDesktop]
-  );
-
-  const handlePointerMove = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!isDraggingRef.current) return;
-
-      const deltaX = e.clientX - startXRef.current;
-      const newRotation = startRotationRef.current + deltaX * SENSITIVITY;
-      currentRotationRef.current = newRotation;
-      gsap.set(carouselRef.current, { rotateY: newRotation });
-
-      // Track velocity for inertia
-      const now = Date.now();
-      const dt = now - lastTimeRef.current;
-      if (dt > 0) {
-        velocityRef.current =
-          ((e.clientX - lastXRef.current) / dt) * SENSITIVITY;
-      }
-      lastXRef.current = e.clientX;
-      lastTimeRef.current = now;
-    },
-    []
-  );
-
-  const handlePointerUp = useCallback(() => {
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
-
-    gsap.to(cursorRef.current, { scale: 1, duration: 0.2 });
-
-    // Apply inertia: velocity × decay distance
-    const inertiaTarget =
-      currentRotationRef.current + velocityRef.current * 380;
-
-    gsap.to(carouselRef.current, {
-      rotateY: inertiaTarget,
-      duration: 1.6,
-      ease: "power2.out",
-      onUpdate() {
-        currentRotationRef.current = gsap.getProperty(
-          carouselRef.current!,
-          "rotateY"
-        ) as number;
-      },
+  // ─── Параллакс изображений ───────────────────────────────────────────────
+  const updateParallax = useCallback((angle: number) => {
+    imagesRef.current.forEach((img, i) => {
+      if (!img) return;
+      // Угол карточки относительно фронта (0° = прямо перед камерой)
+      const cardAngle = ((angle + i * ROTATION_STEP) % 360 + 360) % 360;
+      // Нормализуем в -180..180
+      const normalized = cardAngle > 180 ? cardAngle - 360 : cardAngle;
+      // Параллакс: макс ±30px
+      const parallaxX = (normalized / 180) * 30;
+      gsap.set(img, { x: parallaxX });
     });
   }, []);
 
-  // ── Render ─────────────────────────────────────────────────────────────────
-  return (
-    <section ref={sectionRef} className="overflow-hidden py-32">
+  // ─── Вращение цилиндра ───────────────────────────────────────────────────
+  const rotateTo = useCallback((angle: number, duration = 0) => {
+    currentAngle.current = angle;
+    if (!cylinderRef.current) return;
+    gsap.to(cylinderRef.current, {
+      rotateY: angle,
+      duration,
+      ease: duration > 0 ? 'power2.out' : 'none',
+      onUpdate: () => {
+        const current = gsap.getProperty(cylinderRef.current!, 'rotateY') as number;
+        updateParallax(current);
+      },
+    });
+  }, [updateParallax]);
 
-      {/* Section header */}
-      <div ref={headerRef} className="mb-20 text-center">
-        <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
+  // ─── GSAP Draggable через proxy ──────────────────────────────────────────
+  useEffect(() => {
+    if (!sectionRef.current || !cylinderRef.current) return;
+
+    // Невидимый proxy-элемент — Draggable не умеет крутить rotateY напрямую
+    const proxy = document.createElement('div');
+    sectionRef.current.appendChild(proxy);
+
+    const [draggable] = Draggable.create(proxy, {
+      type: 'x',
+      trigger: sectionRef.current,
+      inertia: true,
+      onDragStart() {
+        dragStartAngle.current = currentAngle.current;
+      },
+      onDrag() {
+        const newAngle = dragStartAngle.current + this.x * 0.15;
+        rotateTo(newAngle);
+      },
+      onThrowUpdate() {
+        const newAngle = dragStartAngle.current + this.x * 0.15;
+        rotateTo(newAngle);
+      },
+    });
+
+    // Начальный параллакс
+    updateParallax(0);
+
+    return () => {
+      draggable.kill();
+      proxy.remove();
+    };
+  }, [rotateTo, updateParallax, radius]);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen bg-[#050505] flex flex-col overflow-hidden cursor-grab active:cursor-grabbing select-none"
+    >
+      {/* ── Заголовок ── */}
+      <div className="page-container text-center pt-24 md:pt-32 pb-8 md:pb-12 relative z-10">
+        <span
+          className="block font-mono text-sm uppercase tracking-[0.3em] font-medium mb-4"
+          style={{ color: 'var(--accent-red)' }}
+        >
           ПОРТФОЛИО
         </span>
-        <h2 className="mt-3 font-display text-5xl font-bold uppercase tracking-tight text-[var(--text-primary)] md:text-7xl">
+        <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tight text-[var(--text-primary)]">
           НАШИ РАБОТЫ
         </h2>
-        <p className="mt-4 font-body text-[var(--text-secondary)]">
-          {isDesktop ? "Перетащите для просмотра" : "Листайте для просмотра"}
-        </p>
       </div>
 
-      {/* Carousel */}
-      {isDesktop ? (
-        // ── Desktop: 3D cylinder carousel ──────────────────────────────────
+      {/* ── 3D Карусель ── */}
+      <div className="flex-1 flex items-center justify-center relative">
+        {/*
+          perspective-wrapper — точка обзора (камера).
+          Размер совпадает с карточкой — центр perspective = центр цилиндра.
+        */}
         <div
-          ref={sceneRef}
-          className="relative h-[520px] cursor-none select-none"
-          style={{ perspective: "1200px" }}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerLeave={handlePointerUp}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
+          className="relative"
+          style={{
+            perspective: '600px',
+            perspectiveOrigin: '50% 50%',
+            width: `${cardSize * 1.2}px`,
+            height: `${cardSize}px`,
+          }}
         >
           {/*
-           * Carousel pivot:
-           *   position: absolute; left: 50%; top: 50%; width: 0; height: 0
-           * Each card is offset by (-CARD_W/2, -CARD_H/2) so its center aligns
-           * with the pivot, then rotated + pushed out by RADIUS.
-           */}
+            Цилиндр — вращается вокруг Y.
+            preserve-3d обязателен: дети должны жить в 3D-пространстве.
+          */}
           <div
-            ref={carouselRef}
-            className="absolute left-1/2 top-1/2"
-            style={{ transformStyle: "preserve-3d", width: 0, height: 0 }}
+            ref={cylinderRef}
+            className="absolute inset-0"
+            style={{ transformStyle: 'preserve-3d', transform: 'rotateY(0deg)' }}
           >
-            {ITEMS.map((item, i) => {
-              const angle = i * (360 / CARD_COUNT);
-              return (
+            {slides.map((slide, i) => (
+              <div
+                key={slide.id}
+                className="absolute inset-0 overflow-hidden"
+                style={{
+                  width: `${cardSize}px`,
+                  height: `${cardSize}px`,
+                  borderRadius: '30px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: '#0A0A0A',
+                  // КРИТИЧНО: отрицательный translateZ = карточки уходят ОТ нас.
+                  // Мы внутри цилиндра — как в poppr.be.
+                  transform: `rotateY(${i * ROTATION_STEP}deg) translateZ(-${radius}px)`,
+                  backfaceVisibility: 'hidden',
+                }}
+              >
+                {/* Изображение с параллаксом (шире карточки на 60px) */}
                 <div
-                  key={item.id}
+                  ref={(el) => { imagesRef.current[i] = el; }}
                   className="absolute"
-                  style={{
-                    width: CARD_W,
-                    height: CARD_H,
-                    left: -CARD_W / 2,
-                    top: -CARD_H / 2,
-                    transform: `rotateY(${angle}deg) translateZ(${RADIUS}px)`,
-                  }}
+                  style={{ inset: '-30px' }}
                 >
-                  {/* Card inner — CSS hover scale */}
+                  {/* Placeholder-градиент вместо <Image> до появления реальных фото */}
                   <div
-                    className="group relative h-full w-full overflow-hidden rounded-2xl transition-transform duration-300 hover:scale-[1.03]"
-                    style={{
-                      background: CARD_BG,
-                      border: "1px solid var(--border)",
-                      boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
-                    }}
-                  >
-                    {/* TODO: Replace with:
-                      <Image src={item.image} alt={item.title} fill className="object-cover" />
-                    */}
-
-                    {/* Background watermark text */}
-                    <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-                      <span
-                        className="font-display text-[80px] font-bold uppercase leading-none"
-                        style={{ color: "rgba(255,255,255,0.05)" }}
-                      >
-                        {item.category}
-                      </span>
-                    </div>
-
-                    {/* Bottom overlay */}
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          "linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 58%)",
-                      }}
-                    />
-
-                    {/* Overlay brightens on hover */}
-                    <div
-                      className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      style={{
-                        background:
-                          "radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.06) 0%, transparent 70%)",
-                      }}
-                    />
-
-                    {/* Card text */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <span
-                        className="font-mono text-xs uppercase tracking-widest"
-                        style={{ color: "var(--accent-red)" }}
-                      >
-                        {item.category}
-                      </span>
-                      <p className="mt-1 font-body text-lg font-medium text-[var(--text-primary)]">
-                        {item.title}
-                      </p>
-                    </div>
+                    className="absolute inset-0"
+                    style={{ background: slide.gradient }}
+                  />
+                  {/* Водяной знак категории */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span
+                      className="font-display text-[80px] font-bold uppercase leading-none"
+                      style={{ color: 'rgba(255,255,255,0.04)' }}
+                    >
+                      {slide.category}
+                    </span>
                   </div>
                 </div>
-              );
-            })}
+
+                {/* Градиент снизу */}
+                <div
+                  className="absolute inset-0 z-10"
+                  style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 45%, transparent 100%)' }}
+                />
+
+                {/* Текст */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                  <span
+                    className="font-mono text-xs uppercase tracking-[0.2em] font-medium"
+                    style={{ color: 'var(--accent-red)' }}
+                  >
+                    {slide.category}
+                  </span>
+                  <h3 className="font-display text-lg md:text-xl font-bold mt-1 text-[var(--text-primary)]">
+                    {slide.title}
+                  </h3>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ) : (
-        // ── Mobile: horizontal scroll-snap ─────────────────────────────────
-        <CarouselMobile items={ITEMS} />
-      )}
-
-      {/* Custom drag cursor — desktop only, follows mouse */}
-      <div
-        ref={cursorRef}
-        aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-50 flex h-20 w-20 items-center justify-center rounded-full transition-opacity duration-200"
-        style={{
-          background: "var(--accent-red)",
-          boxShadow: "0 0 20px var(--accent-red-glow)",
-          opacity: isHovering ? 0.92 : 0,
-        }}
-      >
-        <span className="font-mono text-sm font-medium text-[var(--bg-primary)]">
-          Drag
-        </span>
       </div>
 
+      {/* ── Drag-хинт ── */}
+      <div className="text-center pb-8 md:pb-12">
+        <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/30">
+          drag
+        </span>
+      </div>
     </section>
   );
 }

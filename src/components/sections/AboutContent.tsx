@@ -1,11 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
 import SectionHeading from "@/components/ui/SectionHeading";
 import ScrollReveal from "@/components/animations/ScrollReveal";
+import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
+import Testimonials from "@/components/sections/Testimonials";
 
 const VALUES = [
   {
@@ -71,17 +72,17 @@ export default function AboutContent() {
       {/* Hero */}
       <section
         ref={heroRef}
-        className="flex h-[60vh] items-end bg-[var(--bg-primary)] pb-12"
+        className="relative flex h-[60vh] items-end bg-[var(--bg-primary)] pb-12"
       >
         <div
-          className="pointer-events-none absolute inset-0 h-[60vh]"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
               "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container relative">
           <SectionHeading
             label="О НАС"
             title="БОЛЬШЕ ЧЕМ ДЕТЕЙЛИНГ"
@@ -92,7 +93,7 @@ export default function AboutContent() {
 
       {/* История */}
       <section className="bg-[var(--bg-primary)] py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
             <ScrollReveal>
               <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
@@ -121,7 +122,6 @@ export default function AboutContent() {
               </div>
             </ScrollReveal>
 
-            {/* Photo placeholder */}
             <ScrollReveal delay={0.15}>
               <div
                 className="aspect-[4/3] overflow-hidden rounded-2xl"
@@ -149,7 +149,7 @@ export default function AboutContent() {
 
       {/* Ценности */}
       <section className="bg-[var(--bg-secondary)] py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <ScrollReveal className="mb-12">
             <SectionHeading
               label="Принципы"
@@ -179,7 +179,7 @@ export default function AboutContent() {
 
       {/* Команда */}
       <section className="bg-[var(--bg-primary)] py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <ScrollReveal className="mb-12">
             <SectionHeading label="Люди" title="НАША КОМАНДА" />
           </ScrollReveal>
@@ -217,7 +217,7 @@ export default function AboutContent() {
 
       {/* Цифры */}
       <section className="bg-[var(--bg-secondary)] py-32">
-        <div ref={statsRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div ref={statsRef} className="page-container">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {STATS.map((stat) => (
               <div
@@ -237,9 +237,12 @@ export default function AboutContent() {
         </div>
       </section>
 
+      {/* Отзывы — перенесены с главной */}
+      <Testimonials />
+
       {/* CTA */}
       <section className="bg-[var(--bg-primary)] py-32">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <ScrollReveal className="rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-10 text-center">
             <h2 className="font-display text-3xl font-bold uppercase text-[var(--text-primary)]">
               Приезжайте к нам
@@ -248,12 +251,11 @@ export default function AboutContent() {
               Посмотрите студию, познакомьтесь с командой и получите бесплатную
               консультацию по уходу за вашим автомобилем
             </p>
-            <Link
-              href="/contact"
-              className="mt-6 inline-block rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
-            >
-              Как нас найти
-            </Link>
+            <div className="mt-6 flex justify-center">
+              <GlassCapsuleButton as="link" href="/contact" size="md">
+                Как нас найти
+              </GlassCapsuleButton>
+            </div>
           </ScrollReveal>
         </div>
       </section>

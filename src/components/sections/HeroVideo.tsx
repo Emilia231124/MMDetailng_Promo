@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap-config";
-import GlassButton from "@/components/ui/GlassButton";
 
 export default function HeroVideo() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -11,15 +10,11 @@ export default function HeroVideo() {
   const contentRef = useRef<HTMLDivElement>(null);
   const titleWordsRef = useRef<HTMLSpanElement[]>([]);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLElement>(null);
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     const bg = bgRef.current;
     const content = contentRef.current;
     const subtitle = subtitleRef.current;
-    const cta = ctaRef.current;
-    const indicator = scrollIndicatorRef.current;
     const words = titleWordsRef.current.filter(Boolean);
 
     if (!bg || !content) return;
@@ -46,16 +41,6 @@ export default function HeroVideo() {
     // 4. Subtitle
     if (subtitle) {
       tl.fromTo(subtitle, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 0.8);
-    }
-
-    // 5. CTA button
-    if (cta) {
-      tl.fromTo(cta, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, 1.0);
-    }
-
-    // 6. Scroll indicator
-    if (indicator) {
-      tl.fromTo(indicator, { opacity: 0 }, { opacity: 0.6, duration: 0.6 }, 1.5);
     }
 
     // --- Scroll parallax ---
@@ -96,8 +81,7 @@ export default function HeroVideo() {
           poster="/videos/hero-poster.webp"
           className="absolute inset-0 h-full w-full object-cover"
         >
-          <source src="/videos/herobwcut.webm" type="video/webm" />
-          <source src="/videos/herobwcut.mp4" type="video/mp4" />
+          <source src="/videos/herobw.webm" type="video/webm" />
         </video>
       </div>
 
@@ -112,7 +96,7 @@ export default function HeroVideo() {
       {/* Content */}
       <div
         ref={contentRef}
-        className="absolute inset-0 flex flex-col items-center justify-end pb-24 px-6 will-change-transform"
+        className="absolute inset-0 flex flex-col items-center justify-end pb-[12vh] px-6 will-change-transform"
         style={{ opacity: 0 }}
       >
         {/* Title */}
@@ -143,47 +127,7 @@ export default function HeroVideo() {
         >
           Премиум детейлинг в Махачкале
         </p>
-
-        {/* CTA */}
-        <GlassButton
-          ref={ctaRef}
-          href="/booking"
-          variant="default"
-          size="lg"
-          className="mt-8 w-full max-w-xs md:w-auto"
-          style={{ opacity: 0 }}
-        >
-          Записаться
-        </GlassButton>
-
-        {/* Scroll indicator */}
-        <div
-          ref={scrollIndicatorRef}
-          className="hidden md:flex flex-col items-center gap-2 mt-12 cursor-default hover:opacity-100 transition-opacity duration-300"
-          style={{ opacity: 0 }}
-          aria-hidden="true"
-        >
-          <span className="font-body text-[10px] uppercase tracking-[0.3em] text-[var(--text-muted)]">
-            Scroll
-          </span>
-          <div className="relative h-[60px] w-[1px] bg-[var(--border)] overflow-hidden">
-            <div
-              className="absolute top-0 left-0 w-full bg-[var(--accent-red)]"
-              style={{
-                animation: "scrollDot 1.6s ease-in-out infinite",
-                height: "30%",
-              }}
-            />
-          </div>
-        </div>
       </div>
-
-      <style>{`
-        @keyframes scrollDot {
-          0%   { transform: translateY(-100%); }
-          100% { transform: translateY(400%); }
-        }
-      `}</style>
     </section>
   );
 }

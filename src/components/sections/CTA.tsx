@@ -3,8 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
-import GlassButton from "@/components/ui/GlassButton";
-import BorderTraceButton from "@/components/ui/BorderTraceButton";
+import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
 
 const PHONE = "+7 (928) 000-00-00";
 const PHONE_HREF = "tel:+79280000000";
@@ -22,7 +21,6 @@ export default function CTA() {
       const buttons = buttonsRef.current;
       if (!title) return;
 
-      // Title: scale + opacity driven by scroll (scrub)
       gsap.fromTo(
         title,
         { scale: 0.82, opacity: 0 },
@@ -39,7 +37,6 @@ export default function CTA() {
         }
       );
 
-      // Subtitle + buttons: stagger fade-in
       const elements = [subtitle, buttons].filter(Boolean);
       gsap.fromTo(
         elements,
@@ -67,8 +64,7 @@ export default function CTA() {
       }}
       aria-label="Записаться на детейлинг"
     >
-      <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
-
+      <div className="page-container text-center">
         <h2
           ref={titleRef}
           className="font-display text-[12vw] font-bold uppercase leading-none text-[var(--text-primary)] md:text-8xl"
@@ -83,20 +79,17 @@ export default function CTA() {
           Запишитесь на детейлинг прямо сейчас
         </p>
 
-        {/* Buttons */}
         <div
           ref={buttonsRef}
           className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center"
         >
-          <GlassButton href="/booking" variant="red" size="lg" className="w-full sm:w-auto">
+          <GlassCapsuleButton as="link" href="/booking" size="lg" className="w-full sm:w-auto">
             Записаться онлайн
-          </GlassButton>
-          <BorderTraceButton href={PHONE_HREF} traceColor="white" className="w-full sm:w-auto">
+          </GlassCapsuleButton>
+          <GlassCapsuleButton as="link" href={PHONE_HREF} size="lg" className="w-full sm:w-auto">
             {PHONE}
-          </BorderTraceButton>
+          </GlassCapsuleButton>
         </div>
-
-
       </div>
     </section>
   );

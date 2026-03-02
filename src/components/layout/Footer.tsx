@@ -37,7 +37,7 @@ const SOCIAL_LINKS = [
 export default function Footer() {
   return (
     <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border)]">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      <div className="page-container py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
           {/* Column 1: Brand */}
           <div className="flex flex-col gap-4">

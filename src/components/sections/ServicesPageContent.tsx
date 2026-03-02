@@ -11,6 +11,7 @@ import {
   type ServiceCategoryFilter,
 } from "@/lib/data/services";
 import SectionHeading from "@/components/ui/SectionHeading";
+import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
 
 export default function ServicesPageContent() {
   const [activeCategory, setActiveCategory] = useState<ServiceCategoryFilter>("Все");
@@ -20,9 +21,9 @@ export default function ServicesPageContent() {
   return (
     <main>
       {/* Hero */}
-      <section className="flex h-[50vh] items-end bg-[var(--bg-primary)] pb-12">
+      <section className="relative flex h-[50vh] items-end bg-[var(--bg-primary)] pb-12">
         <div
-          className="pointer-events-none absolute inset-0 h-[50vh]"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
               "linear-gradient(to bottom, rgba(10,10,10,0) 0%, rgba(10,10,10,0.8) 100%)",
@@ -30,14 +31,14 @@ export default function ServicesPageContent() {
           aria-hidden
         />
         <div
-          className="absolute inset-0 h-[50vh]"
+          className="absolute inset-0"
           style={{
             background:
               "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container relative">
           <SectionHeading
             label="КАТАЛОГ"
             title="НАШИ УСЛУГИ"
@@ -48,28 +49,19 @@ export default function ServicesPageContent() {
 
       {/* Filter tabs */}
       <section className="sticky top-[64px] z-10 border-b border-[var(--border)] bg-[var(--bg-primary)]/95 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <div className="flex gap-2 overflow-x-auto py-4 scrollbar-none">
             {SERVICE_CATEGORIES.map((cat) => (
-              <button
+              <GlassCapsuleButton
                 key={cat}
+                size="sm"
                 onClick={() => setActiveCategory(cat)}
-                className={`relative shrink-0 rounded-full px-5 py-2 font-mono text-xs uppercase tracking-widest transition-colors duration-200 ${
-                  activeCategory === cat
-                    ? "bg-[var(--accent-red)] text-[var(--bg-primary)]"
-                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-red)] hover:text-[var(--text-primary)]"
+                className={`shrink-0 font-mono tracking-widest ${
+                  activeCategory === cat ? "border-white/40 bg-white/5" : ""
                 }`}
               >
                 {cat}
-                {activeCategory === cat && (
-                  <motion.span
-                    layoutId="filter-indicator"
-                    className="absolute inset-0 rounded-full bg-[var(--accent-red)]"
-                    style={{ zIndex: -1 }}
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
+              </GlassCapsuleButton>
             ))}
           </div>
         </div>
@@ -77,7 +69,7 @@ export default function ServicesPageContent() {
 
       {/* Services grid */}
       <section className="bg-[var(--bg-primary)] py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <motion.div layout className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
               {filtered.map((service) => (

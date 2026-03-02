@@ -241,3 +241,53 @@ html.lenis body {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+
+/* ============================================
+   Custom duration utility for Tailwind v4
+   ============================================ */
+@layer utilities {
+  .duration-600 {
+    transition-duration: 600ms;
+  }
+}
+
+/* ===== GLOBAL CONTAINER ===== */
+.page-container {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .page-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page-container {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+/* Узкий контейнер для contact, booking */
+.page-container-narrow {
+  width: 100%;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .page-container-narrow {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}

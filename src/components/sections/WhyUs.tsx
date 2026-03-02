@@ -68,7 +68,7 @@ export default function WhyUs() {
       className="bg-[var(--bg-secondary)] py-32 md:py-40 lg:py-48"
       aria-label="Почему MM Detailing"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="page-container">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-24 lg:items-center">
 
           {/* Left: text block */}

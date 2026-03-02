@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
 import { SERVICES, formatPrice, type ServiceData } from "@/lib/data/services";
+import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
 
 // ---------------------------------------------------------------------------
 // Zod schemas per step
@@ -100,11 +101,10 @@ function Step1({
               onClick={() => setForm({ ...form, serviceSlug: service.slug })}
               className={`relative flex items-start gap-4 rounded-xl border p-6 text-left transition-colors ${
                 selected
-                  ? "border-[var(--accent-red)] bg-[var(--bg-elevated)]"
-                  : "border-[var(--border)] bg-[var(--bg-elevated)] hover:border-[var(--accent-red)]/50"
+                  ? "border-white/30 bg-white/5"
+                  : "border-[var(--border)] bg-[var(--bg-elevated)] hover:border-white/20"
               }`}
             >
-              {/* Color swatch */}
               <div
                 className="mt-0.5 h-8 w-8 shrink-0 rounded-lg"
                 style={{ background: service.gradient }}
@@ -199,7 +199,6 @@ function Step2({
           )}
         </div>
 
-        {/* New car toggle */}
         <div className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] p-4">
           <div>
             <p className="font-body text-sm text-[var(--text-primary)]">Новый автомобиль</p>
@@ -274,9 +273,7 @@ function Step3({
         Дата и время
       </h2>
 
-      {/* Calendar */}
       <div className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)]">
-        {/* Month header */}
         <div className="flex items-center justify-between border-b border-[var(--border)] px-4 py-3">
           <button onClick={prevMonth} className="p-1 text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
             ←
@@ -289,7 +286,6 @@ function Step3({
           </button>
         </div>
 
-        {/* Day names */}
         <div className="grid grid-cols-7 border-b border-[var(--border)]">
           {["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"].map((d) => (
             <div key={d} className="py-2 text-center font-mono text-[10px] text-[var(--text-muted)]">
@@ -298,7 +294,6 @@ function Step3({
           ))}
         </div>
 
-        {/* Days grid */}
         <div className="grid grid-cols-7 gap-px p-2">
           {Array.from({ length: firstDayOffset }).map((_, i) => (
             <div key={`empty-${i}`} />
@@ -331,7 +326,6 @@ function Step3({
         <p className="mt-2 font-mono text-xs text-red-400">{errors.date}</p>
       )}
 
-      {/* Time slots */}
       {form.date && (
         <div className="mt-6">
           <p className="mb-3 font-mono text-xs uppercase tracking-widest text-[var(--text-secondary)]">
@@ -339,17 +333,16 @@ function Step3({
           </p>
           <div className="flex flex-wrap gap-2">
             {TIME_SLOTS.map((slot) => (
-              <button
+              <GlassCapsuleButton
                 key={slot}
+                size="sm"
                 onClick={() => setForm({ ...form, timeSlot: slot })}
-                className={`rounded-full px-4 py-2 font-mono text-sm transition-colors ${
-                  form.timeSlot === slot
-                    ? "bg-[var(--accent-red)] text-[var(--bg-primary)]"
-                    : "border border-[var(--border)] text-[var(--text-secondary)] hover:border-[var(--accent-red)]"
+                className={`font-mono ${
+                  form.timeSlot === slot ? "border-white/40 bg-white/5" : ""
                 }`}
               >
                 {slot}
-              </button>
+              </GlassCapsuleButton>
             ))}
           </div>
           {errors.timeSlot && (
@@ -624,7 +617,7 @@ export default function BookingWizard() {
 
   return (
     <main className="min-h-screen bg-[var(--bg-primary)] pt-24">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+      <div className="page-container-narrow">
         {/* Page title */}
         <div className="mb-10">
           <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
@@ -706,19 +699,13 @@ export default function BookingWizard() {
           )}
 
           {step < 5 ? (
-            <button
-              onClick={next}
-              className="rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
-            >
+            <GlassCapsuleButton size="md" onClick={next} className="font-mono">
               Далее →
-            </button>
+            </GlassCapsuleButton>
           ) : (
-            <button
-              onClick={submit}
-              className="rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
-            >
+            <GlassCapsuleButton size="md" onClick={submit} className="font-mono">
               Подтвердить запись
-            </button>
+            </GlassCapsuleButton>
           )}
         </div>
       </div>

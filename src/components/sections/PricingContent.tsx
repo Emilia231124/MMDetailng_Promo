@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useRef } from "react";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap-config";
-import { SERVICES, SERVICE_CATEGORIES, formatPrice, type ServiceCategory } from "@/lib/data/services";
+import { SERVICES, formatPrice, type ServiceCategory } from "@/lib/data/services";
 import SectionHeading from "@/components/ui/SectionHeading";
+import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
 
 type CarType = "new" | "used";
 
@@ -43,16 +44,16 @@ export default function PricingContent() {
   return (
     <main>
       {/* Hero */}
-      <section className="flex h-[50vh] items-end bg-[var(--bg-primary)] pb-12">
+      <section className="relative flex h-[50vh] items-end bg-[var(--bg-primary)] pb-12">
         <div
-          className="pointer-events-none absolute inset-0 h-[50vh]"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
               "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container relative">
           <SectionHeading
             label="ПРАЙС-ЛИСТ"
             title="ЦЕНЫ"
@@ -63,27 +64,19 @@ export default function PricingContent() {
 
       {/* Toggle */}
       <section className="sticky top-[64px] z-10 border-b border-[var(--border)] bg-[var(--bg-primary)]/95 backdrop-blur-md">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-1 py-4">
+        <div className="page-container">
+          <div className="flex items-center gap-2 py-4">
             {(["new", "used"] as CarType[]).map((type) => (
-              <button
+              <GlassCapsuleButton
                 key={type}
+                size="sm"
                 onClick={() => setCarType(type)}
-                className={`relative px-5 py-2 font-mono text-xs uppercase tracking-widest transition-colors duration-200 ${
-                  carType === type
-                    ? "text-[var(--accent-red)]"
-                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                className={`font-mono tracking-widest ${
+                  carType === type ? "border-white/40 bg-white/5" : ""
                 }`}
               >
                 {type === "new" ? "Новый авто" : "С пробегом"}
-                {carType === type && (
-                  <motion.div
-                    layoutId="price-tab-underline"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--accent-red)]"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
+              </GlassCapsuleButton>
             ))}
           </div>
         </div>
@@ -91,7 +84,7 @@ export default function PricingContent() {
 
       {/* Price table */}
       <section ref={tableRef} className="bg-[var(--bg-primary)] py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container">
           <div className="space-y-16">
             {CATEGORY_ORDER.map((category) => {
               const categoryServices = SERVICES.filter((s) => s.category === category);
@@ -114,21 +107,18 @@ export default function PricingContent() {
                             : ""
                         }`}
                       >
-                        {/* Name */}
                         <div className="min-w-0 flex-1">
                           <span className="font-body text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-red)]">
                             {service.title}
                           </span>
                         </div>
 
-                        {/* Duration */}
                         <div className="hidden shrink-0 px-8 sm:block">
                           <span className="font-mono text-xs text-[var(--text-muted)]">
                             {service.duration}
                           </span>
                         </div>
 
-                        {/* Price */}
                         <div className="shrink-0 text-right">
                           <AnimatePresence mode="wait">
                             <motion.span
@@ -147,7 +137,6 @@ export default function PricingContent() {
                           </AnimatePresence>
                         </div>
 
-                        {/* Arrow */}
                         <span
                           className="ml-4 shrink-0 font-mono text-[var(--text-muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent-red)]"
                           aria-hidden
@@ -171,18 +160,12 @@ export default function PricingContent() {
               Расскажите о вашем автомобиле — мы подберём оптимальный комплекс услуг
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-4">
-              <Link
-                href="/contact"
-                className="rounded-full border border-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--accent-red)] transition-colors hover:bg-[var(--accent-red)] hover:text-[var(--bg-primary)]"
-              >
+              <GlassCapsuleButton as="link" href="/contact" size="md">
                 Написать нам
-              </Link>
-              <Link
-                href="/booking"
-                className="rounded-full bg-[var(--accent-red)] px-8 py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90"
-              >
+              </GlassCapsuleButton>
+              <GlassCapsuleButton as="link" href="/booking" size="md">
                 Записаться
-              </Link>
+              </GlassCapsuleButton>
             </div>
           </div>
         </div>

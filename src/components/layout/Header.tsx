@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import GlassButton from "@/components/ui/GlassButton";
+import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -26,16 +26,17 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/");
 
   return (
     <>
@@ -50,9 +51,9 @@ export default function Header() {
         animate={{ y: hidden ? -100 : 0 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
       >
-        <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6">
+        <div className="page-container flex h-full items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-baseline gap-1 leading-none">
+          <Link href="/" className="flex items-baseline gap-1 leading-none shrink-0">
             <span className="font-display text-2xl font-bold text-[var(--text-primary)]">MM</span>
             <span className="font-display text-2xl font-bold text-[var(--accent-red)]">✕</span>
             <span className="font-body text-[10px] tracking-[0.3em] text-[var(--text-secondary)] uppercase">
@@ -60,37 +61,31 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* Desktop nav */}
+          {/* Desktop nav — по центру */}
           <nav className="hidden lg:flex items-center gap-8" aria-label="Основная навигация">
-            {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    "relative font-body text-sm uppercase tracking-wider transition-colors duration-200",
-                    isActive
-                      ? "text-[var(--accent-red)]"
-                      : "text-[var(--text-secondary)] hover:text-[var(--accent-red)]"
-                  )}
-                >
-                  {link.label}
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-underline"
-                      className="absolute -bottom-1 left-0 right-0 h-[1px] bg-[var(--accent-red)]"
-                    />
-                  )}
-                </Link>
-              );
-            })}
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  'text-sm uppercase tracking-[0.15em] font-medium text-white/70 transition-colors duration-300 hover:text-white',
+                  isActive(link.href) && 'text-white'
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
-          {/* Book button (desktop) */}
-          <GlassButton href="/booking" variant="default" className="hidden lg:inline-flex">
+          {/* CTA — справа */}
+          <GlassCapsuleButton
+            as="link"
+            href="/booking"
+            size="md"
+            className="hidden lg:inline-flex"
+          >
             Записаться
-          </GlassButton>
+          </GlassCapsuleButton>
 
           {/* Burger (mobile) */}
           <button
@@ -145,25 +140,26 @@ export default function Header() {
             </button>
 
             {/* Nav links */}
-            <nav className="flex flex-col items-center gap-6">
+            <nav className="flex flex-col items-center gap-4 w-full px-8">
               {NAV_LINKS.map((link, i) => (
                 <motion.div
                   key={link.href}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
+                  className="w-full max-w-xs"
                 >
-                  <Link
+                  <GlassCapsuleButton
+                    as="link"
                     href={link.href}
+                    size="md"
                     className={cn(
-                      "font-display text-4xl font-bold uppercase transition-colors duration-200",
-                      pathname === link.href
-                        ? "text-[var(--accent-red)]"
-                        : "text-[var(--text-primary)] hover:text-[var(--accent-red)]"
+                      "w-full justify-center",
+                      isActive(link.href) ? "border-white/40 bg-white/5" : ""
                     )}
                   >
                     {link.label}
-                  </Link>
+                  </GlassCapsuleButton>
                 </motion.div>
               ))}
 
@@ -171,10 +167,16 @@ export default function Header() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 + NAV_LINKS.length * 0.08, duration: 0.4 }}
+                className="w-full max-w-xs mt-2"
               >
-                <GlassButton href="/booking" variant="default" className="mt-4">
+                <GlassCapsuleButton
+                  as="link"
+                  href="/booking"
+                  size="md"
+                  className="w-full justify-center border-white/30"
+                >
                   Записаться
-                </GlassButton>
+                </GlassCapsuleButton>
               </motion.div>
             </nav>
           </motion.div>

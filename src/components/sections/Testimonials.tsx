@@ -187,7 +187,7 @@ export default function Testimonials() {
       aria-label="Отзывы клиентов"
     >
       {/* Heading */}
-      <div ref={headingRef} className="mx-auto mb-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div ref={headingRef} className="page-container mb-16">
         <SectionHeading
           label="ОТЗЫВЫ"
           title="ЧТО ГОВОРЯТ КЛИЕНТЫ"

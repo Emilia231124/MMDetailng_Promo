@@ -6,6 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Введите имя (минимум 2 символа)"),
@@ -66,16 +67,16 @@ export default function ContactForm() {
   return (
     <main>
       {/* Hero */}
-      <section className="flex h-[40vh] items-end bg-[var(--bg-primary)] pb-12">
+      <section className="relative flex h-[40vh] items-end bg-[var(--bg-primary)] pb-12">
         <div
-          className="pointer-events-none absolute inset-0 h-[40vh]"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
               "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
           }}
           aria-hidden
         />
-        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container relative">
           <SectionHeading
             label="СВЯЗЬ"
             title="КОНТАКТЫ"
@@ -86,7 +87,7 @@ export default function ContactForm() {
 
       {/* Content */}
       <section className="bg-[var(--bg-primary)] py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="page-container-narrow">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
 
             {/* Left — Contact info */}
@@ -119,21 +120,20 @@ export default function ContactForm() {
 
                 {/* Socials */}
                 <div>
-                  <p className="font-mono text-xs uppercase tracking-widest text-[var(--text-muted)]">
+                  <p className="mb-3 font-mono text-xs uppercase tracking-widest text-[var(--text-muted)]">
                     Соцсети
                   </p>
-                  <div className="mt-3 flex gap-3">
+                  <div className="flex gap-3">
                     {SOCIALS.map((social) => (
-                      <a
+                      <GlassCapsuleButton
                         key={social.label}
+                        as="link"
                         href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.label}
-                        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] font-mono text-xs text-[var(--text-secondary)] transition-colors hover:border-[var(--accent-red)] hover:text-[var(--accent-red)]"
+                        size="sm"
+                        className="font-mono"
                       >
                         {social.icon}
-                      </a>
+                      </GlassCapsuleButton>
                     ))}
                   </div>
                 </div>
@@ -162,7 +162,6 @@ export default function ContactForm() {
                     className="mt-6 space-y-4"
                     noValidate
                   >
-                    {/* Name */}
                     <div>
                       <label className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--text-secondary)]">
                         Имя *
@@ -180,7 +179,6 @@ export default function ContactForm() {
                       )}
                     </div>
 
-                    {/* Phone */}
                     <div>
                       <label className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--text-secondary)]">
                         Телефон *
@@ -198,7 +196,6 @@ export default function ContactForm() {
                       )}
                     </div>
 
-                    {/* Message */}
                     <div>
                       <label className="mb-1 block font-mono text-xs uppercase tracking-widest text-[var(--text-secondary)]">
                         Сообщение *
@@ -216,13 +213,15 @@ export default function ContactForm() {
                       )}
                     </div>
 
-                    <button
+                    <GlassCapsuleButton
+                      as="button"
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full rounded-full bg-[var(--accent-red)] py-3 font-mono text-sm uppercase tracking-widest text-[var(--bg-primary)] transition-opacity hover:opacity-90 disabled:opacity-50"
+                      size="md"
+                      className="w-full justify-center font-mono"
                     >
                       {isSubmitting ? "Отправка..." : "Отправить"}
-                    </button>
+                    </GlassCapsuleButton>
                   </form>
                 )}
               </div>
