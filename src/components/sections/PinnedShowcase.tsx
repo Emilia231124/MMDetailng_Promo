@@ -72,7 +72,7 @@ const slides = [
     title: "ПОЛИРОВКА",
     subtitle: "PAINT CORRECTION",
     description: "Восстановление идеального блеска. Удаление царапин, голограмм и окислов.",
-    image: "/images/services/polish.png",
+    image: "/images/services/polish_hide.png",
   },
   {
     id: "interior",
@@ -243,7 +243,7 @@ export default function PinnedShowcase() {
                 className="object-cover"
                 sizes="100vw"
                 priority={i === 0}
-                quality={85}
+                quality={100}
               />
 
               {/* Overlay для читаемости текста поверх фото */}

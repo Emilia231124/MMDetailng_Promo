@@ -14,6 +14,7 @@ export default function HomePage() {
       <StatementSection />
       <PinnedShowcase />
       <BeforeAfterReveal />
+
     </main>
   );
 }
