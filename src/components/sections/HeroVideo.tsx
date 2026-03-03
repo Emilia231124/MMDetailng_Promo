@@ -96,8 +96,8 @@ export default function HeroVideo() {
       {/* Content */}
       <div
         ref={contentRef}
-        className="absolute inset-0 flex flex-col items-center justify-end pb-[40vh] px-6 will-change-transform"
-        style={{ opacity: 0 }}
+        className="absolute inset-0 flex flex-col items-center justify-end px-6 will-change-transform"
+        style={{ opacity: 0, paddingBottom: '20vh' }}
       >
         {/* Title */}
         <h1 className="flex flex-wrap justify-center gap-x-6 font-display font-bold uppercase tracking-tighter leading-none text-center">
