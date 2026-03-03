@@ -96,7 +96,7 @@ export default function HeroVideo() {
       {/* Content */}
       <div
         ref={contentRef}
-        className="absolute inset-0 flex flex-col items-center justify-end pb-[12vh] px-6 will-change-transform"
+        className="absolute inset-0 flex flex-col items-center justify-end pb-[40vh] px-6 will-change-transform"
         style={{ opacity: 0 }}
       >
         {/* Title */}
@@ -122,7 +122,7 @@ export default function HeroVideo() {
         {/* Subtitle */}
         <p
           ref={subtitleRef}
-          className="mt-6 font-body text-base md:text-2xl uppercase tracking-wide text-[var(--text-secondary)] text-center"
+          className="mt-6 font-body text-base md:text-2xl uppercase tracking-wide text-[var(--text-secondary)] text-center bottom"
           style={{ opacity: 0 }}
         >
           Премиум детейлинг в Махачкале
