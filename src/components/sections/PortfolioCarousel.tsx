@@ -5,18 +5,18 @@ import Image from 'next/image';
 
 /* ─── Данные ─── */
 const items = [
-  { id: 1,  cat: 'PPF',       title: 'BMW X5',              img: '/images/portfolio/1.jpg' },
-  { id: 2,  cat: 'CERAMIC',   title: 'Mercedes S-Class',    img: '/images/portfolio/2.jpg' },
-  { id: 3,  cat: 'INTERIOR',  title: 'Toyota Land Cruiser', img: '/images/portfolio/3.jpg' },
-  { id: 4,  cat: 'POLISH',    title: 'Porsche Cayenne',     img: '/images/portfolio/4.jpg' },
-  { id: 5,  cat: 'PPF',       title: 'Audi Q8',             img: '/images/portfolio/5.jpg' },
-  { id: 6,  cat: 'TINT',      title: 'Range Rover Sport',   img: '/images/portfolio/6.jpg' },
-  { id: 7,  cat: 'CERAMIC',   title: 'Lexus LX',            img: '/images/portfolio/7.jpg' },
-  { id: 8,  cat: 'INTERIOR',  title: 'BMW 7 Series',        img: '/images/portfolio/8.jpg' },
-  { id: 9,  cat: 'POLISH',    title: 'Audi RS6',            img: '/images/portfolio/9.jpg' },
-  { id: 10, cat: 'TINT',      title: 'Mercedes GLE',        img: '/images/portfolio/10.jpg' },
-  { id: 11, cat: 'PPF',       title: 'Porsche 911',         img: '/images/portfolio/11.jpg' },
-  { id: 12, cat: 'CERAMIC',   title: 'BMW M4',              img: '/images/portfolio/12.jpg' },
+  { id: 1,  cat: 'PPF',       title: 'BMW X5',              img: '/images/portfolio/1_.jpg' },
+  { id: 2,  cat: 'CERAMIC',   title: 'Mercedes S-Class',    img: '/images/portfolio/2__.jpg' },
+  { id: 3,  cat: 'INTERIOR',  title: 'Toyota Land Cruiser', img: '/images/portfolio/3_.jpg' },
+  { id: 4,  cat: 'POLISH',    title: 'Porsche Cayenne',     img: '/images/portfolio/4_.jpg' },
+  { id: 5,  cat: 'PPF',       title: 'Audi Q8',             img: '/images/portfolio/5_.jpg' },
+  { id: 6,  cat: 'TINT',      title: 'Range Rover Sport',   img: '/images/portfolio/6_.jpg' },
+  { id: 7,  cat: 'CERAMIC',   title: 'Lexus LX',            img: '/images/portfolio/7__.jpg' },
+  { id: 8,  cat: 'INTERIOR',  title: 'BMW 7 Series',        img: '/images/portfolio/8__.jpg' },
+  { id: 9,  cat: 'POLISH',    title: 'Audi RS6',            img: '/images/portfolio/9__.jpg' },
+  // { id: 10, cat: 'TINT',      title: 'Mercedes GLE',        img: '/images/portfolio/10_.jpg' },
+  // { id: 11, cat: 'PPF',       title: 'Porsche 911',         img: '/images/portfolio/11_.jpg' },
+  // { id: 12, cat: 'CERAMIC',   title: 'BMW M4',              img: '/images/portfolio/12_.jpg' },
 ];
 
 const COUNT = items.length;     // 12
@@ -289,7 +289,8 @@ const PortfolioCarousel = () => {
                     alt={item.title}
                     fill
                     style={{ objectFit: 'cover' }}
-                    sizes="(max-width: 768px) 340px, 30vw"
+                    sizes="(max-width: 768px) 680px, calc(30vw + 280px)"
+                    quality={90}
                     draggable={false}
                     priority={i < 6}
                   />
@@ -306,63 +307,23 @@ const PortfolioCarousel = () => {
                   }}
                 />
 
-                {/* Watermark */}
+                {/* Текст внизу — scaleX(-1) компенсирует зеркало backface */}
                 <div
                   style={{
                     position: 'absolute',
-                    inset: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    pointerEvents: 'none',
-                    zIndex: 5,
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 'clamp(3rem, 6vw, 7rem)',
-                      fontWeight: 800,
-                      textTransform: 'uppercase',
-                      opacity: 0.06,
-                      color: '#fff',
-                      letterSpacing: '0.05em',
-                      fontFamily: 'var(--font-syne, sans-serif)',
-                    }}
-                  >
-                    {item.cat}
-                  </span>
-                </div>
-
-                {/* Текст внизу */}
-                <div
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
+                    bottom: 'clamp(20px, 3vw, 40px)',
                     left: 0,
                     right: 0,
                     padding: 'clamp(16px, 1.5vw, 28px)',
                     zIndex: 20,
                     pointerEvents: 'none',
+                    transform: 'scaleX(-1)',
                   }}
                 >
-                  <span
-                    style={{
-                      fontSize: '10px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.25em',
-                      fontWeight: 500,
-                      color: '#C41E2A',
-                      fontFamily: 'var(--font-mono, monospace)',
-                      display: 'block',
-                    }}
-                  >
-                    {item.cat}
-                  </span>
                   <h3
                     style={{
                       fontSize: 'clamp(14px, 1.2vw, 20px)',
                       fontWeight: 700,
-                      marginTop: '4px',
                       color: '#fff',
                       fontFamily: 'var(--font-syne, sans-serif)',
                     }}
