@@ -49,16 +49,16 @@ const services: Service[] = [
   },
   // ═══ PAGE-VIEW 3 ═══
   {
-    id: 'tint',
+    id: 'tinting',
     title: 'Тонировка',
     features: ['Атермальная', 'Классическая', 'Бронирование стёкол'],
     imgLarge: '/images/services/tint.png',
     imgSmall: '/images/services/tint_hide.png',
-    imgLargeVw: 34, imgLargeHVh: 26,   // landscape
-    imgSmallVw: 28, imgSmallHVh: 26,
+    imgLargeVw: 24, imgLargeHVh: 34,   // landscape
+    imgSmallVw: 36, imgSmallHVh: 28,
   },
   {
-    id: 'detailing',
+    id: 'wash',
     title: 'Детейлинг‑мойка',
     features: ['Комплексная мойка', 'Мойка двигателя', 'Уход за дисками'],
     imgLarge: '/images/services/detailing.png',
@@ -133,9 +133,18 @@ export default function ServicesPageContent() {
             splitBy="words"
             stagger={0.03}
             delay={0.5}
-            className="mt-8 max-w-[58%] font-body text-[clamp(18px,1.5vw,21px)] leading-relaxed text-[var(--text-secondary)]"
+            className="mt-8 max-w-[65%] font-body text-[clamp(18px,1.5vw,21px)] leading-relaxed text-[var(--text-secondary)]"
           >
-            Полный комплекс работ — от невидимой защиты кузова до детальной реставрации каждой поверхности. Профессиональное оборудование, сертифицированные материалы, подход без компромиссов.<br></br> Кроме того, мы одни из первых детейлинг-центров в регионе, кто закрыл актуальный запрос владельцев китайских авто: полная русификация интерфейса — прямо на месте или с выездом к клиенту.
+            Полный комплекс работ — от невидимой защиты кузова до детальной реставрации каждой поверхности. Профессиональное оборудование, сертифицированные материалы, подход без компромиссов.
+          </ScrollRevealText>
+          <ScrollRevealText
+            as="p"
+            splitBy="words"
+            stagger={0.03}
+            delay={0.7}
+            className="max-w-[65%] font-body text-[clamp(18px,1.5vw,21px)] leading-relaxed text-[var(--text-secondary)]"
+          >
+            Кроме того, мы одни из первых детейлинг-центров в регионе, кто закрыл актуальный запрос владельцев китайских авто: полная русификация интерфейса — прямо на месте или с выездом к клиенту.
           </ScrollRevealText>
         </div>
       </section>

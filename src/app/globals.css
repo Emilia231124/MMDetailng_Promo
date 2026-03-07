@@ -300,3 +300,64 @@ html.lenis body {
     padding-right: 2.5rem;
   }
 }
+
+/* ═══ SKETCH MODAL ANIMATION ═══ */
+/* Общий тайминг открытия: ~1300ms */
+
+@keyframes sketchFadeIn {
+  from { background: rgba(0, 0, 0, 0); backdrop-filter: blur(0px); }
+  to   { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
+}
+
+@keyframes sketchFadeOut {
+  from { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); }
+  to   { background: rgba(0, 0, 0, 0); backdrop-filter: blur(0px); }
+}
+
+@keyframes sketchModalBgIn {
+  from { background-color: transparent; }
+  to   { background-color: #0A0A0A; }
+}
+
+@keyframes sketchModalBgOut {
+  from { background-color: #0A0A0A; }
+  to   { background-color: transparent; }
+}
+
+@keyframes sketchContentIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sketchContentOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-20px); }
+}
+
+/* ─── Backdrop: 0ms delay, 500ms ─── */
+.sketch-modal-backdrop {
+  animation: sketchFadeIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.sketch-modal-backdrop.out {
+  animation: sketchFadeOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+/* ─── Modal box background: 800ms delay, 500ms ─── */
+.sketch-modal-box {
+  background-color: transparent;
+  animation: sketchModalBgIn 0.5s 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.sketch-modal-box.out {
+  background-color: #0A0A0A;
+  animation: sketchModalBgOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+/* ─── Content: 1000ms delay, 500ms ─── */
+.sketch-modal-content {
+  opacity: 0;
+  animation: sketchContentIn 0.5s 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+.sketch-modal-content.out {
+  opacity: 1;
+  animation: sketchContentOut 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}

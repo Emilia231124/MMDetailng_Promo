@@ -8,7 +8,7 @@ export const SITE_CONFIG = {
 export const NAV_LINKS = [
   { label: "Услуги", href: "/services" },
   { label: "Портфолио", href: "/portfolio" },
-  { label: "Цены", href: "/pricing" },
+  { label: "Русификация", href: "/russification" },
   { label: "О нас", href: "/about" },
   { label: "Контакты", href: "/contact" },
 ] as const;

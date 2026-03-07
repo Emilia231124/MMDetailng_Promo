@@ -1,7 +1,6 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 type Size = 'sm' | 'md' | 'lg';
@@ -74,7 +73,7 @@ const GlassCapsuleButton = forwardRef<
   if (props.as === 'link') {
     const { as, href, ...rest } = props as AsLinkProps;
     return (
-      <Link
+      <a
         href={href}
         ref={ref as React.Ref<HTMLAnchorElement>}
         className={cn('group', baseClasses)}
@@ -82,7 +81,7 @@ const GlassCapsuleButton = forwardRef<
       >
         {shineElement}
         <span className="relative z-20">{children}</span>
-      </Link>
+      </a>
     );
   }
 

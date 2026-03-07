@@ -123,7 +123,7 @@ function ServiceSide({
         />
       </div>
 
-      {/* Text block — hover triggers underline animation, click goes to /pricing */}
+      {/* Text block — hover triggers underline animation, click goes to /russification */}
       <div
         style={{
           position: 'absolute',
@@ -137,9 +137,9 @@ function ServiceSide({
         onMouseLeave={() => setHovered(false)}
       >
         <Link
-          href={`/pricing?service=${service.id}`}
+          href={`/services/${service.id}`}
           style={{ display: 'block', textDecoration: 'none' }}
-          aria-label={`Перейти к ценам на: ${service.title}`}
+          aria-label={`Подробнее об услуге: ${service.title}`}
         >
           {/* Title — word-by-word slide-up + underline per word */}
           <h2

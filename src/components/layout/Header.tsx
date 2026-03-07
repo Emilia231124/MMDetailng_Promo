@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_LINKS } from "@/lib/constants";
@@ -53,18 +52,18 @@ export default function Header() {
       >
         <div className="page-container flex h-full items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-baseline gap-1 leading-none shrink-0">
+          <a href="/" className="flex items-baseline gap-1 leading-none shrink-0">
             <span className="font-display text-2xl font-bold text-[var(--text-primary)]">MM</span>
             <span className="font-display text-2xl font-bold text-[var(--accent-red)]">✕</span>
             <span className="font-body text-[10px] tracking-[0.3em] text-[var(--text-secondary)] uppercase">
               Detailing
             </span>
-          </Link>
+          </a>
 
           {/* Desktop nav — по центру */}
           <nav className="hidden lg:flex items-center gap-8" aria-label="Основная навигация">
             {NAV_LINKS.map((link) => (
-              <Link
+              <a
                 key={link.href}
                 href={link.href}
                 className={cn(
@@ -73,7 +72,7 @@ export default function Header() {
                 )}
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
           </nav>
 
