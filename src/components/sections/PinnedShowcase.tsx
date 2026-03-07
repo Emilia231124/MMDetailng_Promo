@@ -30,11 +30,11 @@ const CONFIG = {
   // ── Длительности фаз (условные единицы timeline) ──
   // Можешь менять пропорции. Сумма = общая длина цикла одного слайда.
   phase1_darkness: 0.03,      // Темнота в начале
-  phase2_imageIn: 0.45,       // Проявление фото
-  phase3_titleIn: 0.45,       // Появление заголовка
-  phase4_descIn: 0.5,        // Появление description
+  phase2_imageIn: 0.35,       // Проявление фото
+  phase3_titleIn: 0.35,       // Появление заголовка
+  phase4_descIn: 0.35,        // Появление description
   phase4_pause: 0.02,         // Пауза (всё видно, чтение)
-  phase5_fadeOut: 0.2,       // Затухание всего
+  phase5_fadeOut: 0.1,       // Затухание всего
   phase5_darkness: 0.03,      // Темнота в конце (буфер перед след. слайдом)
 
   // ── Заголовок ──
@@ -79,7 +79,7 @@ const slides = [
     title: "ХИМЧИСТКА",
     subtitle: "INTERIOR DETAILING",
     description: "Глубокая чистка салона до заводского состояния.",
-    image: "/images/services/interior.png",
+    image: "/images/services/interior1.png",
   },
 ] as const;
 

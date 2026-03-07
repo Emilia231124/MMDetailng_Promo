@@ -1,148 +1,155 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  SERVICES,
-  SERVICE_CATEGORIES,
-  getServicesByCategory,
-  formatPrice,
-  type ServiceCategoryFilter,
-} from "@/lib/data/services";
-import SectionHeading from "@/components/ui/SectionHeading";
-import GlassCapsuleButton from "@/components/ui/GlassCapsuleButton";
+import ScrollRevealText from '@/components/ui/ScrollRevealText';
+import PinnedServicePair from '@/components/sections/PinnedServicePair';
+import type { Service } from '@/components/sections/PinnedServicePair';
+
+// imgLargeVw/HVh — ширина (vw) и высота (vh) большого фото
+// imgSmallVw/HVh — ширина (vw) и высота (vh) малого фото (min 25vw)
+// Landscape feel: большой Vw + маленький HVh
+// Portrait feel: стандартный Vw + большой HVh
+const services: Service[] = [
+  // ═══ PAGE-VIEW 1 ═══
+  {
+    id: 'ppf',
+    title: 'Защитная плёнка',
+    features: ['Полная оклейка', 'Частичная оклейка', 'Антигравийные зоны'],
+    imgLarge: '/images/services/ppf.png',
+    imgSmall: '/images/services/ppf_hide.png',
+    imgLargeVw: 26, imgLargeHVh: 44,   // portrait
+    imgSmallVw: 35, imgSmallHVh: 25,
+  },
+  {
+    id: 'ceramic',
+    title: 'Керамическое покрытие',
+    features: ['Однослойное', 'Многослойное', 'Колёсные диски'],
+    imgLarge: '/images/services/ceramic.png',
+    imgSmall: '/images/services/ceramic_hide.png',
+    imgLargeVw: 38, imgLargeHVh: 28,   // landscape (wider, shorter)
+    imgSmallVw: 27, imgSmallHVh: 24,
+  },
+  // ═══ PAGE-VIEW 2 ═══
+  {
+    id: 'polishing',
+    title: 'Полировка кузова',
+    features: ['Мягкая полировка', 'Абразивная', 'Восстановительная'],
+    imgLarge: '/images/services/polishing.png',
+    imgSmall: '/images/services/polish_hide.png',
+    imgLargeVw: 32, imgLargeHVh: 34,   // near-square / 4:3 feel
+    imgSmallVw: 32, imgSmallHVh: 30,
+  },
+  {
+    id: 'interior',
+    title: 'Химчистка салона',
+    features: ['Полная химчистка', 'Кожа', 'Потолок'],
+    imgLarge: '/images/services/interior.png',
+    imgSmall: '/images/services/interior_hide.png',
+    imgLargeVw: 28, imgLargeHVh: 42,   // portrait (taller)
+    imgSmallVw: 30, imgSmallHVh: 24,   // landscape small
+  },
+  // ═══ PAGE-VIEW 3 ═══
+  {
+    id: 'tint',
+    title: 'Тонировка',
+    features: ['Атермальная', 'Классическая', 'Бронирование стёкол'],
+    imgLarge: '/images/services/tint.png',
+    imgSmall: '/images/services/tint_hide.png',
+    imgLargeVw: 34, imgLargeHVh: 26,   // landscape
+    imgSmallVw: 28, imgSmallHVh: 26,
+  },
+  {
+    id: 'detailing',
+    title: 'Детейлинг‑мойка',
+    features: ['Комплексная мойка', 'Мойка двигателя', 'Уход за дисками'],
+    imgLarge: '/images/services/detailing.png',
+    imgSmall: '/images/services/detailing_hide.png',
+    imgLargeVw: 24, imgLargeHVh: 40,   // portrait
+    imgSmallVw: 30, imgSmallHVh: 28,
+  },
+  // ═══ PAGE-VIEW 4 ═══
+  {
+    id: 'leather',
+    title: 'Реставрация кожи',
+    features: ['Покраска', 'Ремонт разрывов', 'Восстановление текстуры'],
+    imgLarge: '/images/services/leather.png',
+    imgSmall: '/images/services/leather_hide.png',
+    imgLargeVw: 32, imgLargeHVh: 30,   // landscape
+    imgSmallVw: 24, imgSmallHVh: 36,
+  },
+  {
+    id: 'windshield',
+    title: 'Защита лобового стекла',
+    features: ['Антидождь', 'Бронеплёнка', 'Керамика для стёкол'],
+    imgLarge: '/images/services/windshield.png',
+    imgSmall: '/images/services/windshield_hide.png',
+    imgLargeVw: 28, imgLargeHVh: 42,   // portrait
+    imgSmallVw: 28, imgSmallHVh: 22,   // landscape small
+  },
+  // ═══ PAGE-VIEW 5 (одиночная) — Русификация 1.5× larger ═══
+  {
+    id: 'russification',
+    title: 'Русификация авто',
+    features: ['Приборная панель', 'Мультимедиа', 'Голосовой помощник'],
+    imgLarge: '/images/services/russification.png',
+    imgSmall: '/images/services/russification_hide.png',
+    imgLargeVw: 38, imgLargeHVh: 38,   // 1.5× base × 1.2
+    imgSmallVw: 32, imgSmallHVh: 36,   // 1.5× base small × 1.2
+    extraImgs: [
+      '/images/services/russification_2.png',
+      '/images/services/russification_3.png',
+    ],
+    extraVw: [36, 26],    // 1.5× of [20, 15] × 1.2
+    extraHVh: [24, 36],   // landscape + portrait × 1.2
+  },
+];
+
+const pageViews: [Service, Service | undefined][] = [
+  [services[0], services[1]],
+  [services[2], services[3]],
+  [services[4], services[5]],
+  [services[6], services[7]],
+  [services[8], undefined],
+];
 
 export default function ServicesPageContent() {
-  const [activeCategory, setActiveCategory] = useState<ServiceCategoryFilter>("Все");
-
-  const filtered = getServicesByCategory(activeCategory);
-
   return (
-    <main>
-      {/* Hero */}
-      <section className="relative flex h-[50vh] items-end bg-[var(--bg-primary)] pb-12">
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to bottom, rgba(10,10,10,0) 0%, rgba(10,10,10,0.8) 100%)",
-          }}
-          aria-hidden
+    <main style={{ background: '#050505', minHeight: '100vh' }}>
+      <div style={{ height: '80px' }} aria-hidden />
+
+      {/* Заголовок + подтекст */}
+      <section style={{ paddingTop: '140px', paddingBottom: '100px' }}>
+        <div className="services-page-container">
+          <ScrollRevealText
+            as="h1"
+            splitBy="words"
+            stagger={0.08}
+            className="font-display text-[clamp(2.5rem,6vw,5rem)] font-bold uppercase leading-[1.1] tracking-[-0.02em] text-[var(--text-primary)]"
+          >
+            Что мы предлагаем
+          </ScrollRevealText>
+
+          <ScrollRevealText
+            as="p"
+            splitBy="words"
+            stagger={0.03}
+            delay={0.5}
+            className="mt-8 max-w-[58%] font-body text-[clamp(18px,1.5vw,21px)] leading-relaxed text-[var(--text-secondary)]"
+          >
+            Полный комплекс работ — от невидимой защиты кузова до детальной реставрации каждой поверхности. Профессиональное оборудование, сертифицированные материалы, подход без компромиссов.<br></br> Кроме того, мы одни из первых детейлинг-центров в регионе, кто закрыл актуальный запрос владельцев китайских авто: полная русификация интерфейса — прямо на месте или с выездом к клиенту.
+          </ScrollRevealText>
+        </div>
+      </section>
+
+      {pageViews.map(([left, right], index) => (
+        <PinnedServicePair
+          key={left.id}
+          left={left}
+          right={right}
+          layoutIndex={index}
         />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 50% 0%, rgba(196,30,42,0.08) 0%, transparent 60%)",
-          }}
-          aria-hidden
-        />
-        <div className="page-container relative">
-          <SectionHeading
-            label="КАТАЛОГ"
-            title="НАШИ УСЛУГИ"
-            description="Полный спектр премиум детейлинга для вашего автомобиля"
-          />
-        </div>
-      </section>
+      ))}
 
-      {/* Filter tabs */}
-      <section className="sticky top-[64px] z-10 border-b border-[var(--border)] bg-[var(--bg-primary)]/95 backdrop-blur-md">
-        <div className="page-container">
-          <div className="flex gap-2 overflow-x-auto py-4 scrollbar-none">
-            {SERVICE_CATEGORIES.map((cat) => (
-              <GlassCapsuleButton
-                key={cat}
-                size="sm"
-                onClick={() => setActiveCategory(cat)}
-                className={`shrink-0 font-mono tracking-widest ${
-                  activeCategory === cat ? "border-white/40 bg-white/5" : ""
-                }`}
-              >
-                {cat}
-              </GlassCapsuleButton>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services grid */}
-      <section className="bg-[var(--bg-primary)] py-16 md:py-24">
-        <div className="page-container">
-          <motion.div layout className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <AnimatePresence mode="popLayout">
-              {filtered.map((service) => (
-                <motion.div
-                  key={service.slug}
-                  layout
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.88 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                >
-                  <Link
-                    href={`/services/${service.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] transition-colors duration-300 hover:border-[var(--accent-red)]"
-                  >
-                    {/* Image placeholder */}
-                    <div
-                      className="relative aspect-[16/10] overflow-hidden"
-                      style={{ background: service.gradient }}
-                    >
-                      <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105">
-                        <div
-                          className="absolute inset-0"
-                          style={{
-                            background:
-                              "radial-gradient(ellipse at 60% 40%, rgba(255,255,255,0.06) 0%, transparent 60%)",
-                          }}
-                        />
-                      </div>
-                      <span
-                        className="absolute bottom-2 right-3 font-display text-5xl font-bold uppercase leading-none"
-                        style={{ color: "rgba(255,255,255,0.07)" }}
-                      >
-                        {service.category}
-                      </span>
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex flex-1 flex-col p-6">
-                      <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-red)]">
-                        {service.category}
-                      </span>
-                      <h3 className="mt-2 font-display text-2xl font-bold text-[var(--text-primary)]">
-                        {service.title}
-                      </h3>
-                      <p className="mt-2 line-clamp-2 font-body text-sm text-[var(--text-secondary)]">
-                        {service.desc}
-                      </p>
-                      <div className="mt-4 flex items-center justify-between">
-                        <span className="font-mono text-sm text-[var(--accent-red)]">
-                          от {formatPrice(service.priceNew)} ₽
-                        </span>
-                        <span
-                          className="font-mono text-lg text-[var(--accent-red)] transition-transform duration-300 group-hover:translate-x-2"
-                          aria-hidden
-                        >
-                          →
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
-
-          {filtered.length === 0 && (
-            <p className="py-24 text-center font-body text-[var(--text-secondary)]">
-              Услуги в этой категории не найдены
-            </p>
-          )}
-        </div>
-      </section>
+      <div style={{ height: 'clamp(200px, 20vh, 400px)' }} aria-hidden />
     </main>
   );
 }

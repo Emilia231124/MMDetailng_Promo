@@ -22,7 +22,7 @@ const items = [
 const COUNT = items.length;     // 12
 const STEP = 360 / COUNT;       // 30°
 const RADIUS = 857;             // px — ТОЧНО из DevTools poppr.be
-const TILT_Z = 6;               // ° наклон — ТОЧНО из poppr.be
+const TILT_Z = 0;               // ° наклон — ТОЧНО из poppr.be
 const PERSPECTIVE = 1000;       // px — из CSS poppr.be
 
 /*
@@ -311,7 +311,7 @@ const PortfolioCarousel = () => {
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: 'clamp(20px, 3vw, 40px)',
+                    bottom: 0,
                     left: 0,
                     right: 0,
                     padding: 'clamp(16px, 1.5vw, 28px)',

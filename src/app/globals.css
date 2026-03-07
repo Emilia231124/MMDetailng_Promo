@@ -275,6 +275,15 @@ html.lenis body {
   }
 }
 
+/* Контейнер страницы услуг — уменьшенные отступы */
+.services-page-container {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(16px, 2.5vw, 38px);
+  padding-right: clamp(16px, 2.5vw, 38px);
+}
+
 /* Узкий контейнер для contact, booking */
 .page-container-narrow {
   width: 100%;

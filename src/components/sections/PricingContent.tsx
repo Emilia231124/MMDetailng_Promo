@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
@@ -16,6 +17,24 @@ const CATEGORY_ORDER: ServiceCategory[] = ["Защита", "Восстановл
 export default function PricingContent() {
   const [carType, setCarType] = useState<CarType>("new");
   const tableRef = useRef<HTMLDivElement>(null);
+  const highlightRefs = useRef<Map<string, HTMLElement>>(new Map());
+
+  const searchParams = useSearchParams();
+  const highlightedService = searchParams.get("service");
+
+  // Scroll to and highlight the targeted service on mount
+  useEffect(() => {
+    if (!highlightedService) return;
+    const el = highlightRefs.current.get(highlightedService);
+    if (!el) return;
+
+    // Small delay to let page settle
+    const timer = setTimeout(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [highlightedService]);
 
   useGSAP(
     () => {
@@ -96,55 +115,96 @@ export default function PricingContent() {
                     {category}
                   </h2>
                   <div className="overflow-hidden rounded-xl border border-[var(--border)]">
-                    {categoryServices.map((service, idx) => (
-                      <Link
-                        key={service.slug}
-                        href={`/services/${service.slug}`}
-                        data-row
-                        className={`group flex items-center justify-between px-6 py-4 transition-colors hover:bg-[var(--bg-elevated)] ${
-                          idx !== categoryServices.length - 1
-                            ? "border-b border-[var(--border)]"
-                            : ""
-                        }`}
-                      >
-                        <div className="min-w-0 flex-1">
-                          <span className="font-body text-[var(--text-primary)] transition-colors group-hover:text-[var(--accent-red)]">
-                            {service.title}
-                          </span>
-                        </div>
+                    {categoryServices.map((service, idx) => {
+                      const isHighlighted = highlightedService === service.slug;
 
-                        <div className="hidden shrink-0 px-8 sm:block">
-                          <span className="font-mono text-xs text-[var(--text-muted)]">
-                            {service.duration}
-                          </span>
-                        </div>
-
-                        <div className="shrink-0 text-right">
-                          <AnimatePresence mode="wait">
-                            <motion.span
-                              key={`${service.slug}-${carType}`}
-                              initial={{ opacity: 0, y: -8 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: 8 }}
-                              transition={{ duration: 0.2 }}
-                              className="block font-mono text-xl text-[var(--accent-red)]"
-                            >
-                              {formatPrice(
-                                carType === "new" ? service.priceNew : service.priceUsed
-                              )}{" "}
-                              ₽
-                            </motion.span>
-                          </AnimatePresence>
-                        </div>
-
-                        <span
-                          className="ml-4 shrink-0 font-mono text-[var(--text-muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent-red)]"
-                          aria-hidden
+                      return (
+                        <div
+                          key={service.slug}
+                          ref={(el) => {
+                            if (el) highlightRefs.current.set(service.slug, el);
+                            else highlightRefs.current.delete(service.slug);
+                          }}
+                          style={{ position: "relative" }}
+                          className={
+                            idx !== categoryServices.length - 1
+                              ? "border-b border-[var(--border)]"
+                              : ""
+                          }
                         >
-                          →
-                        </span>
-                      </Link>
-                    ))}
+                          {/* Animated white border outline on highlight */}
+                          <AnimatePresence>
+                            {isHighlighted && (
+                              <motion.div
+                                aria-hidden
+                                style={{
+                                  position: "absolute",
+                                  inset: 0,
+                                  border: "1.5px solid rgba(255,255,255,0.85)",
+                                  pointerEvents: "none",
+                                  zIndex: 2,
+                                }}
+                                initial={{ opacity: 0, scaleX: 0.96, scaleY: 0.85 }}
+                                animate={{ opacity: 1, scaleX: 1, scaleY: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                              />
+                            )}
+                          </AnimatePresence>
+
+                          <Link
+                            href={`/services/${service.slug}`}
+                            data-row
+                            className={`group relative flex items-center justify-between px-6 py-4 transition-colors hover:bg-[var(--bg-elevated)] ${
+                              isHighlighted ? "bg-[var(--bg-elevated)]" : ""
+                            }`}
+                          >
+                            <div className="min-w-0 flex-1">
+                              <span
+                                className={`font-body transition-colors group-hover:text-[var(--accent-red)] ${
+                                  isHighlighted
+                                    ? "text-white"
+                                    : "text-[var(--text-primary)]"
+                                }`}
+                              >
+                                {service.title}
+                              </span>
+                            </div>
+
+                            <div className="hidden shrink-0 px-8 sm:block">
+                              <span className="font-mono text-xs text-[var(--text-muted)]">
+                                {service.duration}
+                              </span>
+                            </div>
+
+                            <div className="shrink-0 text-right">
+                              <AnimatePresence mode="wait">
+                                <motion.span
+                                  key={`${service.slug}-${carType}`}
+                                  initial={{ opacity: 0, y: -8 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: 8 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="block font-mono text-xl text-[var(--accent-red)]"
+                                >
+                                  {formatPrice(
+                                    carType === "new" ? service.priceNew : service.priceUsed
+                                  )}{" "}
+                                  ₽
+                                </motion.span>
+                              </AnimatePresence>
+                            </div>
+
+                            <span
+                              className="ml-4 shrink-0 font-mono text-[var(--text-muted)] transition-all duration-300 group-hover:translate-x-1 group-hover:text-[var(--accent-red)]"
+                              aria-hidden
+                            >
+                              →
+                            </span>
+                          </Link>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               );

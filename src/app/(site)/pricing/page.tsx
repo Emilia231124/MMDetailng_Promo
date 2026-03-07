@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import PricingContent from "@/components/sections/PricingContent";
 
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  return <PricingContent />;
+  return (
+    <Suspense>
+      <PricingContent />
+    </Suspense>
+  );
 }
